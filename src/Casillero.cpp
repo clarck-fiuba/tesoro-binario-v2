@@ -7,23 +7,14 @@
 
 #include "Casillero.h"
 
-Casillero::Casillero(unsigned int z, unsigned int x, unsigned int y, int rangoVecinos) {
+Casillero::Casillero(unsigned int z, unsigned int x, unsigned int y) {
 	this->validarXYyZ(x, y, z);
 	this->estado = VACIA;
 	this->propietario = 0;
 	this->ficha = NULL;
-	this->rangoDeVecinos = rangoVecinos;
-	this->dimensionCuboVecinos = (this->rangoDeVecinos * 2) + 1;
-	this->vecinos = new Casillero ***[this->dimensionCuboVecinos];
-	for(int i = 0; i < this->dimensionCuboVecinos; i++) {
-		this->vecinos[i] = new Casillero **[this->dimensionCuboVecinos];
-		for(int j = 0; j < this->dimensionCuboVecinos; j++) {
-			this->vecinos[i][j] = new Casillero *[this->dimensionCuboVecinos];
-			for(int k = 0; k < this->dimensionCuboVecinos; k++) {
-				this->vecinos[i][j][k] = NULL;
-			}
-		}
-	}
+	this->rangoDeVecinos = 0;
+	this->volumenCuboVecinos = 0;
+	this->vecinos = NULL;
 	this->z = z;
 	this->x = x;
 	this->y = y;
@@ -31,6 +22,45 @@ Casillero::Casillero(unsigned int z, unsigned int x, unsigned int y, int rangoVe
 
 Casillero::~Casillero() {
 	delete this->ficha;
+	this->eliminarCuboVecinos();
+}
+
+unsigned int Casillero::getZ() {
+	return this->z;
+}
+
+unsigned int Casillero::getX() {
+	return this->x;
+}
+
+unsigned int Casillero::getY() {
+	return this->y;
+}
+
+void Casillero::inicializarCuboVecinos() {
+	this->vecinos = new Casillero ***[this->volumenCuboVecinos];
+	for(int i = 0; i < this->volumenCuboVecinos; i++) {
+		this->vecinos[i] = new Casillero **[this->volumenCuboVecinos];
+		for(int j = 0; j < this->volumenCuboVecinos; j++) {
+			this->vecinos[i][j] = new Casillero *[this->volumenCuboVecinos];
+			for(int k = 0; k < this->volumenCuboVecinos; k++) {
+				this->vecinos[i][j][k] = NULL;
+			}
+		}
+	}
+}
+
+void Casillero::eliminarCuboVecinos() {
+	for(int i = 0; i < this->volumenCuboVecinos; i++) {
+		for(int j = 0; j < this->volumenCuboVecinos; j++) {
+			for(int k = 0; k < this->volumenCuboVecinos; k++) {
+				this->vecinos[i][j][k] = NULL;
+			}
+			delete[] this->vecinos[i][j];
+		}
+		delete[] this->vecinos[i];
+	}
+	delete[] this->vecinos;
 }
 
 void Casillero::validarXYyZ(unsigned int x, unsigned int y, unsigned z) {
@@ -67,6 +97,14 @@ EstadoCasilla Casillero::getEstado() {
 
 void Casillero::setEstado(EstadoCasilla nuevoEstado) {
 	this->estado = nuevoEstado;
+}
+
+void Casillero::setRangoVecinos(int rangoVecinos) {
+	this->rangoDeVecinos = rangoVecinos;
+}
+
+void Casillero::setVolumenCuboVecinos(int volumenCuboVecinos) {
+	this->volumenCuboVecinos = volumenCuboVecinos;
 }
 
 Casillero *Casillero::getVecino(unsigned int z, unsigned int x, unsigned int y) {

@@ -7,9 +7,7 @@
 
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
-#ifndef NULL
-#define NULL 0
-#endif
+#include <iostream>
 #include "Ficha.h"
 
 enum EstadoCasilla {
@@ -26,7 +24,7 @@ private:
 	Ficha *ficha;
 	Casillero ****vecinos;
 	int rangoDeVecinos;
-	int dimensionCuboVecinos;
+	int volumenCuboVecinos;
 	unsigned int z;
 	unsigned int x;
 	unsigned int y;
@@ -42,13 +40,43 @@ public:
 	 * pre: Las coordenadas x, y, z deben ser mayores a 0.
 	 * post: Crea un casillero con las coordenadas que se pasaron por parametro.
 	 */
-	Casillero(unsigned int z, unsigned int x, unsigned int y, int rangoVecinos);
+	Casillero(unsigned int z, unsigned int x, unsigned int y);
 
 	/*
 	 * pre:
 	 * post:
 	 */
 	virtual ~Casillero();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	unsigned int getZ();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	unsigned int getX();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	unsigned int getY();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void inicializarCuboVecinos();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void eliminarCuboVecinos();
 
 	/*
 	 * pre:
@@ -91,6 +119,18 @@ public:
 	 * post:
 	 */
 	void setEstado(EstadoCasilla nuevoEstado);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void setRangoVecinos(int rangoVecinos);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void setVolumenCuboVecinos(int volumenCuboVecinos);
 
 	/*
 	 * pre:
