@@ -12,12 +12,15 @@
 #include "Jugador.h"
 #include "Carta.h"
 #include "Tablero.h"
+#include "FuncionalidadCartas.h"
+
 
 class TesoroBinario {
 private:
 	unsigned int numeroJugadores;
 	Lista<Jugador *> *jugadores;
 	Tablero *tablero;
+	FuncionalidadCartas * funcionalidad;
 	//Lista<Carta *> *masoDeCartas;
 	unsigned int cantidadDeTesoros;
 	unsigned int turnos;

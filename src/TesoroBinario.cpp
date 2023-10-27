@@ -6,6 +6,7 @@
  */
 
 #include "TesoroBinario.h"
+#include "FuncionalidadCartas.h"
 
 TesoroBinario::TesoroBinario(unsigned int numeroJugadores) {
 	this->numeroJugadores = numeroJugadores;
@@ -15,6 +16,7 @@ TesoroBinario::TesoroBinario(unsigned int numeroJugadores) {
 	}
 	//this->tablero = this->crearTablero(this->numeroJugadores);
 	this->tablero = new Tablero(numeroJugadores * 10, numeroJugadores * 10, numeroJugadores * 10);
+	this->funcionalidad = new FuncionalidadCartas(this->tablero);
 	this->turnos = 0;
 	this->cantidadDeTesoros = 0;
 
@@ -136,18 +138,13 @@ void TesoroBinario::JugarCarta(Jugador *jugador) {
 	std::cin >> numeroCarta;
 	switch(jugador->getMasoCarta()->obtenerElemento(numeroCarta)->getTipoDeCarta()) {
 		case BLINDAJE:
-			std::cout << "Ingrese la coordenada de su tesoro que desea blindar: " << std::endl;
-			std::cout << "Z: ";
-			std::cin >> z;
-			std::cout << "X: ";
-			std::cin >> x;
-			std::cout << "Y: ";
-			std::cin >> y;
+
+			this->funcionalidad->blindarCarta();
 			//jugador->getMasoCarta()->obtenerElemento(numeroCarta)->CartaBlindaje(this->tablero->getCasillero(z, x, y));
-			this->tablero->getCasillero(z, x, y)->setEstado(BLINDADA);
+			/*this->tablero->getCasillero(z, x, y)->setEstado(BLINDADA);
 			if(this->tablero->getCasillero(z, x, y)->getEstado() == BLINDADA) {
 				std::cout << "Casillero blindado" << std::endl;
-			}
+			}*/
 			break;
 		case RADAR:
 			std::cout << "Ingrese la coordenada donde quiere poner su radar: " << std::endl;
