@@ -5,6 +5,7 @@
  *      Author: gonzalo
  */
 
+#include <iostream>
 #include "TesoroBinario.h"
 
 int main() {

@@ -4,7 +4,7 @@
  *  Created on: 20 oct. 2023
  *      Author: gonzalo
  */
-
+#include <cstdlib>
 #include "Jugador.h"
 
 Jugador::Jugador(unsigned int numeroJugador) {
@@ -14,11 +14,8 @@ Jugador::Jugador(unsigned int numeroJugador) {
 	this->numeroRandom = 2;
 	this->manoDeCartas = new Lista<Carta *>();
 	for(unsigned int i = 1; i <= 3; i++) {
-		/*std::random_device rd;
-		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, 3);
-		this->numeroRandom = dist(mt);*/
 		Carta *nuevaCarta;
+		this->numeroRandom = rand() % 3 + 1;
 		switch(numeroRandom) {
 			case 1:
 				nuevaCarta = new Carta(BLINDAJE);
@@ -32,7 +29,6 @@ Jugador::Jugador(unsigned int numeroJugador) {
 		}
 		this->manoDeCartas->agregarElemento(nuevaCarta);
 	}
-
 }
 
 Jugador::~Jugador() {
