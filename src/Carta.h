@@ -19,38 +19,27 @@ enum TipoDeCarta {
 class Carta {
 private:
 	TipoDeCarta tipoDeCarta;
-	//Casillero *casillero;
+
+	/*
+	 * pre: -
+	 * post: Valida que el tipo de carta sea el correcto.
+	 */
+	void validarTipoDeCarta(TipoDeCarta tipoDeCarta);
 
 public:
 	/*
-	 * pre:
-	 * post:
+	 * pre: El tipo de carta debe ser: BLINDAJE, RADAR o PARTIR_TESORO.
+	 * post: Carta con el tipo de carta pasada por parámetro.
 	 */
 	Carta(TipoDeCarta tipoDeCarta);
 
-	/*
-	 * pre:
-	 * post:
-	 */
 	virtual ~Carta();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Devuelve el tipo de carta.
 	 */
 	TipoDeCarta getTipoDeCarta();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setTipoDeCarta(TipoDeCarta nuevoTipo);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void CartaBlindaje(Casillero *casillero);
 };
 
 #endif /* CARTA_H_ */

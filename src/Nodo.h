@@ -7,9 +7,7 @@
 
 #ifndef NODO_H_
 #define NODO_H_
-#ifndef NULL
-#define NULL 0
-#endif
+#include <iostream>
 
 template<class T> class Nodo {
 private:

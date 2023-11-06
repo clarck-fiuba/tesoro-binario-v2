@@ -8,20 +8,17 @@
 #ifndef TESOROBINARIO_H_
 #define TESOROBINARIO_H_
 #include <iostream>
-#include "Lista.h"
 #include "Jugador.h"
 #include "Carta.h"
 #include "Tablero.h"
 #include "FuncionalidadCartas.h"
-
 
 class TesoroBinario {
 private:
 	unsigned int numeroJugadores;
 	Lista<Jugador *> *jugadores;
 	Tablero *tablero;
-	FuncionalidadCartas * funcionalidad;
-	//Lista<Carta *> *masoDeCartas;
+	FuncionalidadCartas* funcionalidadCartas;
 	unsigned int cantidadDeTesoros;
 	unsigned int turnos;
 
@@ -71,30 +68,6 @@ public:
 	 * pre:
 	 * post:
 	 */
-	void setProfundidad(unsigned int profundidad);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setAncho(unsigned int ancho);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setAlto(unsigned int alto);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	Tablero *crearTablero(unsigned int numeroJugadores);
-
-	/*
-	 * pre:
-	 * post:
-	 */
 	void configurarCantidadDeTesoros(unsigned int cantidadDeTesoros);
 
 	/*
@@ -121,6 +94,12 @@ public:
 	 * post:
 	 */
 	void colocarTesoroMina(unsigned int z, unsigned int x, unsigned int y, Jugador jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void mostrarMasoCarta(Jugador* jugador);
 
 	/*
 	 * pre:

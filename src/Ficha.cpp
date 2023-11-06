@@ -7,7 +7,14 @@
 
 #include "Ficha.h"
 
+void Ficha::validarTipoDeFicha(TipoDeFicha tipoDeFicha) {
+	if(tipoDeFicha != TESORO && tipoDeFicha != ESPIA && tipoDeFicha != MINA) {
+		throw std::runtime_error("Tipo de ficha no existente");
+	}
+}
+
 Ficha::Ficha(TipoDeFicha tipoDeFicha) {
+	this->validarTipoDeFicha(tipoDeFicha);
 	this->tipoDeFicha = tipoDeFicha;
 }
 
@@ -19,7 +26,8 @@ TipoDeFicha Ficha::getTipoFicha() {
 	return this->tipoDeFicha;
 }
 
-void Ficha::setTipoFicha(TipoDeFicha nuevaFicha) {
-	this->tipoDeFicha = nuevaFicha;
+void Ficha::setTipoFicha(TipoDeFicha nuevoTipoDeFicha) {
+	this->validarTipoDeFicha(nuevoTipoDeFicha);
+	this->tipoDeFicha = nuevoTipoDeFicha;
 }
 

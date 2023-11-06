@@ -95,8 +95,11 @@ public:
 	void iniciarCursor();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: Se ha iniciado un recorrido (invocando el metodo iniciarCursor())
+	 * 		y desde entonces no se han agregado o removido elementos de la lista.
+	 * post: Mueve el cursor y lo posiciona en el siguiente elemento del recorrido.
+	 * 		 El valor de retorno indica si el cursor quedó posicionado sobre un elemento o no
+	 * 		 (en caso de que la Lista esté vacía o no existan más elementos por recorrer).
 	 */
 	bool avanzarCursor();
 
@@ -128,7 +131,7 @@ template<class T> Lista<T>::Lista(Lista<T> &otraLista) {
 
 template<class T> void Lista<T>::validarPosicion(unsigned int posicion) {
 	if(posicion < 1 || posicion > this->longitud + 1) {
-		throw "La posicion esta fuera de rango";
+		throw std::runtime_error("La posicion esta fuera de rango");
 	}
 }
 
@@ -193,7 +196,7 @@ template<class T> void Lista<T>::removerElemento(unsigned int posicion) {
 		Nodo<T> *removido;
 		if(posicion == 1) {
 			removido = this->primero;
-			this->primero->cambiarSiguiente(removido->obtenerSiguiente());
+			this->primero = removido->obtenerSiguiente();
 		}
 		else {
 			Nodo<T> *anterior = this->obtenerNodo(posicion - 1);

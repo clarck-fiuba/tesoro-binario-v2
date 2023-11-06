@@ -10,13 +10,13 @@
 int main() {
 	unsigned int numeroJugadores = 2;
 	unsigned int cantidadDeTesoros = numeroJugadores * 2;
-	TesoroBinario *nuevoJuego = new TesoroBinario(numeroJugadores);
+	TesoroBinario* nuevoJuego = new TesoroBinario(numeroJugadores);
 
 	//nuevoJuego->crearTablero(numeroJugadores);
 
-	std::cout << "Profundidad: " << nuevoJuego->getTablero()->getProfundidad() << std::endl;
-	std::cout << "Ancho: " <<nuevoJuego->getTablero()->getAncho() << std::endl;
-	std::cout << "Alto: " <<nuevoJuego->getTablero()->getAlto() << std::endl;
+	//std::cout << "Profundidad: " << nuevoJuego->getTablero()->getProfundidad() << std::endl;
+	//std::cout << "Ancho: " <<nuevoJuego->getTablero()->getAncho() << std::endl;
+	//std::cout << "Alto: " <<nuevoJuego->getTablero()->getAlto() << std::endl;
 
 	nuevoJuego->configurarCantidadDeTesoros(cantidadDeTesoros);
 
@@ -31,7 +31,21 @@ int main() {
 	}
 	std::cout << "Fase de ingreso tesoro terminada" << std::endl;
 
-	nuevoJuego->JugarCarta(nuevoJuego->getJugador(1));
+	try {
+		nuevoJuego->JugarCarta(nuevoJuego->getJugador(1));
+		if(nuevoJuego->getTablero()->getCasillero(1, 1, 2)->getTipoFicha() == TESORO /*&
+		   nuevoJuego->getTablero()->getCasillero(1, 1, 3)->estaVacio() &&
+		   nuevoJuego->getTablero()->getCasillero(1, 2, 1)->estaVacio()*/) {
+			std::cout << "Se ha partido bien el tesoro" << std::endl;
+		}
+		else if(nuevoJuego->getTablero()->getCasillero(1, 1, 2)->getTipoFicha() == TESORO &&
+				nuevoJuego->getTablero()->getCasillero(1, 1, 3)->getTipoFicha() == TESORO) {
+			std::cout << "Se ha partido mal el tesoro" << std::endl;
+		}
+	} catch(std::runtime_error& excep) {
+		std::cerr << excep.what() << std::endl;
+	}
+
 
 	/*nuevoJuego->colocarTesoros(1, 1, 1, nuevoJuego->getJugador(1));
 	nuevoJuego->colocarTesoros(1, 1, 2, nuevoJuego->getJugador(1));

@@ -7,42 +7,23 @@
 
 #include "Carta.h"
 
+void Carta::validarTipoDeCarta(TipoDeCarta tipoDeCarta) {
+	if(tipoDeCarta != BLINDAJE && tipoDeCarta != RADAR && tipoDeCarta != PARTIR_TESORO) {
+		throw std::runtime_error("Tipo de carta no existente");
+	}
+}
+
 Carta::Carta(TipoDeCarta tipoDeCarta) {
+	this->validarTipoDeCarta(tipoDeCarta);
 	this->tipoDeCarta = tipoDeCarta;
-	//this->casillero = NULL;
 }
 
 Carta::~Carta() {
-
+	// TODO Auto-generated destructor stub
 }
 
 TipoDeCarta Carta::getTipoDeCarta() {
 	return this->tipoDeCarta;
-}
-
-void Carta::setTipoDeCarta(TipoDeCarta nuevoTipo) {
-	this->tipoDeCarta = nuevoTipo;
-}
-
-void Carta::CartaBlindaje(Casillero *casilleroABlindar) {
-	//Casillero *auxiliar = casilleroABlindar;
-
-	if(this->tipoDeCarta == BLINDAJE && casilleroABlindar->getFicha()->getTipoFicha() == TESORO) {
-		casilleroABlindar->setEstado(BLINDADA);
-	}
-	else {
-		throw "No se puede blindar";
-	}
-
-	//delete auxiliar;
-
-	/*if(this->tipoDeCarta == BLINDAJE && casilleroABlindar->getFicha()->getTipoFicha() == TESORO) {
-		this->casillero = casilleroABlindar;
-		this->casillero->setEstado(BLINDADA);
-	}
-	else {
-		throw "No se puede";
-	}*/
 }
 
 

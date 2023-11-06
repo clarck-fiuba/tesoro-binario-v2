@@ -7,32 +7,49 @@
 
 #include "Jugador.h"
 
+void Jugador::validarNumeroJugador(unsigned int numeroJugador) {
+	if(numeroJugador < 1) {
+		throw std::runtime_error("El numero del jugador debe ser mayor a 0");
+	}
+}
+
+void Jugador::validarCantidadDeTesoros(unsigned int cantidadDeTesoros) {
+	if(cantidadDeTesoros < 0) {
+		throw std::runtime_error("La cantidad de tesoros no puede ser negativa");
+	}
+}
+
+void Jugador::validarNumeroTurno(unsigned int numeroTurno) {
+	if(numeroTurno < 1) {
+		throw std::runtime_error("El numero de turno debe ser mayor a 0");
+	}
+}
+
 Jugador::Jugador(unsigned int numeroJugador) {
+	this->validarNumeroJugador(numeroJugador);
 	this->numeroJugador = numeroJugador;
 	this->cantidadDeTesoros = 0;
 	this->numeroTurno = 0;
-	this->numeroRandom = 2;
+	this->numeroRandom = 3;
 	this->manoDeCartas = new Lista<Carta *>();
 	for(unsigned int i = 1; i <= 3; i++) {
 		/*std::random_device rd;
 		std::mt19937 mt(rd());
 		std::uniform_int_distribution<int> dist(1, 3);
 		this->numeroRandom = dist(mt);*/
-		Carta *nuevaCarta;
 		switch(numeroRandom) {
 			case 1:
-				nuevaCarta = new Carta(BLINDAJE);
+				this->manoDeCartas->agregarElemento(new Carta(BLINDAJE));
 				break;
 			case 2:
-				nuevaCarta = new Carta(RADAR);
+				this->manoDeCartas->agregarElemento(new Carta(RADAR));
 				break;
 			case 3:
-				nuevaCarta = new Carta(PARTIR_TESORO);
+				this->manoDeCartas->agregarElemento(new Carta(PARTIR_TESORO));
 				break;
 		}
-		this->manoDeCartas->agregarElemento(nuevaCarta);
-	}
 
+	}
 }
 
 Jugador::~Jugador() {
@@ -55,14 +72,20 @@ unsigned int Jugador::getNumeroTurno() {
 	return this->numeroTurno;
 }
 
-Lista<Carta *> *Jugador::getMasoCarta() {
+Lista<Carta *> *Jugador::getManoCarta() {
 	return this->manoDeCartas;
 }
 
 void Jugador::setCantidadDeTesoros(unsigned int cantidadDeTesoros) {
+	this->validarCantidadDeTesoros(cantidadDeTesoros);
 	this->cantidadDeTesoros = cantidadDeTesoros;
 }
 
 void Jugador::setNumeroDeTurno(unsigned int turno) {
 	this->numeroTurno = turno;
+}
+
+void Jugador::eliminarCartaDeLaMano(unsigned int posicion) {
+	delete this->manoDeCartas->obtenerElemento(posicion);
+	this->manoDeCartas->removerElemento(posicion);
 }
