@@ -8,27 +8,23 @@
 #ifndef TESOROBINARIO_H_
 #define TESOROBINARIO_H_
 #include <iostream>
-#include "Lista.h"
 #include "Jugador.h"
 #include "Carta.h"
 #include "Tablero.h"
 #include "FuncionalidadCartas.h"
-
 
 class TesoroBinario {
 private:
 	unsigned int numeroJugadores;
 	Lista<Jugador *> *jugadores;
 	Tablero *tablero;
-	FuncionalidadCartas * funcionalidad;
-	//Lista<Carta *> *masoDeCartas;
+	FuncionalidadCartas* funcionalidadCartas;
 	unsigned int cantidadDeTesoros;
 	unsigned int turnos;
 
 	unsigned int profundidadTablero;
 	unsigned int anchoTablero;
 	unsigned int altoTablero;
-
 
 public:
 
@@ -54,48 +50,6 @@ public:
 	 * pre:
 	 * post:
 	 */
-	unsigned int getProfundidad();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	unsigned int getAncho();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	unsigned int getAlto();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setProfundidad(unsigned int profundidad);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setAncho(unsigned int ancho);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	void setAlto(unsigned int alto);
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	Tablero *crearTablero(unsigned int numeroJugadores);
-
-	/*
-	 * pre:
-	 * post:
-	 */
 	void configurarCantidadDeTesoros(unsigned int cantidadDeTesoros);
 
 	/*
@@ -104,30 +58,52 @@ public:
 	 */
 	Jugador *getJugador(unsigned int posicion);
 
+	Lista<Jugador* > *getJugadores();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Casillero* ingresoDeCoordenadas();
+
+	unsigned int getTurnos();
+
+	void setTurno(unsigned int turno);
+
 	/*
 	 * pre:
 	 * post:
 	 */
 	void colocarTesoros(unsigned int z, unsigned int x, unsigned int y, Jugador *jugador);
-	void colocarTesoros(Jugador *jugador);
+	void colocarTesoros(Jugador* jugador);
+
+	void activarCasillero(Jugador* jugador);
 
 	/*
 	 * pre:
 	 * post:
 	 */
-	void colocarEspias(unsigned int z, unsigned int x, unsigned int y, Jugador jugador);
+	void colocarEspias(Jugador* jugador);
 
 	/*
 	 * pre:
 	 * post:
 	 */
-	void colocarTesoroMina(unsigned int z, unsigned int x, unsigned int y, Jugador jugador);
+	void colocarTesoroMina(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void mostrarMasoCarta(Jugador* jugador);
 
 	/*
 	 * pre:
 	 * post:
 	 */
 	void JugarCarta(Jugador *jugador);
+
+	void eliminarJugador(unsigned int posicion);
 };
 
 #endif /* TESOROBINARIO_H_ */
