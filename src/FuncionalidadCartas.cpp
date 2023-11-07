@@ -12,7 +12,8 @@ void FuncionalidadCartas::validarTablero(Tablero* tablero) {
 	}
 }
 
-Casillero* FuncionalidadCartas::ingresoDeCoordenadas(unsigned int &z, unsigned int &x, unsigned int &y) {
+Casillero* FuncionalidadCartas::ingresoDeCoordenadas() {
+	unsigned int z, x, y;
 	std::cout << "Z: ";
 	std::cin >> z;
 	std::cout << "X: ";
@@ -47,9 +48,8 @@ FuncionalidadCartas::~FuncionalidadCartas() {
 
 void FuncionalidadCartas::blindarCarta(Jugador* jugador){
 	this->validarJugador(jugador);
-	unsigned int z, x, y;
 	std::cout << "Ingrese la coordenada de su tesoro que desea blindar: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas(z, x, y);
+	Casillero* casillero = this->ingresoDeCoordenadas();
 	if(this->validarCasilleroTesoro(casillero) && this->validarCasilleroPropietario(casillero, jugador)){
 		casillero->setEstado(BLINDADA);
 	}
@@ -63,10 +63,9 @@ void FuncionalidadCartas::blindarCarta(Jugador* jugador){
 
 void FuncionalidadCartas::radar(Jugador* jugador) {
 	this->validarJugador(jugador);
-	unsigned int z, x, y;
 	unsigned contadorTesoros = 0;
 	std::cout << "Ingrese la coordenada donde quiere poner su radar: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas(z, x, y);
+	Casillero* casillero = this->ingresoDeCoordenadas();
 	for(int i = -casillero->getRangoVecinos(); i <= casillero->getRangoVecinos(); i++) {
 		for(int j = -casillero->getRangoVecinos(); j <= casillero->getRangoVecinos(); j++) {
 			for(int k = -casillero->getRangoVecinos(); k <= casillero->getRangoVecinos(); k++) {
@@ -92,10 +91,9 @@ void FuncionalidadCartas::radar(Jugador* jugador) {
 
 void FuncionalidadCartas::partirTesoro(Jugador* jugador) {
 	this->validarJugador(jugador);
-	unsigned int z, x, y;
 	bool tesoroPartido = false;
 	std::cout << "Ingrese el tesoro que desea partir: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas(z, x, y);
+	Casillero* casillero = this->ingresoDeCoordenadas();
 	if(this->validarCasilleroTesoro(casillero) && this->validarCasilleroPropietario(casillero, jugador)) {
 		for(int i = -casillero->getRangoVecinos(); i <= casillero->getRangoVecinos(); i++) {
 			for(int j = -casillero->getRangoVecinos(); j <= casillero->getRangoVecinos(); j++) {

@@ -11,14 +11,25 @@
 #include <random>
 #include "Lista.h"
 #include "Carta.h"
+#include "Casillero.h"
+#include "Ficha.h"
 
 class Jugador {
 private:
 	unsigned int numeroJugador;
 	unsigned int cantidadDeTesoros;
+	unsigned int cantidadDeMinasPuestas;
+	unsigned int cantidadDeMinasPermitidas;
 	unsigned int numeroTurno;
 	int numeroRandom;
+	bool minaEncontrada;
 	Lista<Carta *> *manoDeCartas;
+	Casillero* casilleros[4];
+	//Lista<Casillero* > *casilleros;
+	//Lista<unsigned int> *turnoRecuperarTesoro;
+	unsigned int turnoRecuperarTesoro[4];
+	unsigned int casillerosDesactivados;
+	unsigned int casillerosActivados;
 
 	/*
 	 * pre: -
@@ -93,6 +104,38 @@ public:
 	 * post: Elimina la carta en la posicion pasada por parámetro.
 	 */
 	void eliminarCartaDeLaMano(unsigned int posicion);
+
+	unsigned int getCasillerosDesactivados();
+
+	void setCasillerosDesactivados(unsigned int casillerosDesactivados);
+
+	unsigned int getCasillerosActivados();
+
+	void setCasilleroActivados(unsigned int casillerosActivados);
+
+	unsigned int getTurnoRecuperarTesoro(int posicion);
+
+	void setTurnoRecuperarTesoro(int posicion, unsigned int turno);
+
+	Casillero* getCasillero(int posicion);
+
+	void setCasillero(int posicion, Casillero* casillero);
+
+	unsigned int getCantidadDeMinasPermitidas();
+
+	void setCantidadDeMinasPermitidas(unsigned int cantidad);
+
+	unsigned int getCantidadDeMinasPuestas();
+
+	void setCantidadDeMinasPuestas(unsigned int cantidad);
+
+	bool getMinaEncontrada();
+
+	void setMinaEncontrada();
+
+	//Lista<Casillero*> *getCasilleros();
+
+	//void setCasillero(Casillero* casillero);
 };
 
 #endif /* JUGADOR_H_ */

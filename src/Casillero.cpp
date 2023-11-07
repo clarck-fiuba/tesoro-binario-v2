@@ -135,6 +135,10 @@ void Casillero::colocarFicha(Ficha *nuevaFicha) {
 	this->ficha = nuevaFicha;
 }
 
+void Casillero::quitarFicha() {
+	this->ficha = NULL;
+}
+
 void Casillero::cambiarFicha(TipoDeFicha nuevoTipo) {
 	this->verificarFicha();
 	this->ficha->setTipoFicha(nuevoTipo);

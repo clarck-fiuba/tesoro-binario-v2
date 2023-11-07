@@ -24,7 +24,7 @@ private:
 	 * pre: -
 	 * post: Devuelve el casillero con las coordenadas que se ingresaron.
 	 */
-	Casillero* ingresoDeCoordenadas(unsigned int &z, unsigned int &x, unsigned int &y);
+	Casillero* ingresoDeCoordenadas();
 
 	/*
 	 * pre: -

@@ -152,6 +152,8 @@ public:
 	 */
 	void cambiarFicha(TipoDeFicha nuevoTipo);
 
+	void quitarFicha();
+
 	/*
 	 * pre: -
 	 * post: Devuelve el estado del casillero.

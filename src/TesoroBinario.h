@@ -50,24 +50,6 @@ public:
 	 * pre:
 	 * post:
 	 */
-	unsigned int getProfundidad();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	unsigned int getAncho();
-
-	/*
-	 * pre:
-	 * post:
-	 */
-	unsigned int getAlto();
-
-	/*
-	 * pre:
-	 * post:
-	 */
 	void configurarCantidadDeTesoros(unsigned int cantidadDeTesoros);
 
 	/*
@@ -76,24 +58,38 @@ public:
 	 */
 	Jugador *getJugador(unsigned int posicion);
 
+	Lista<Jugador* > *getJugadores();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Casillero* ingresoDeCoordenadas();
+
+	unsigned int getTurnos();
+
+	void setTurno(unsigned int turno);
+
 	/*
 	 * pre:
 	 * post:
 	 */
 	void colocarTesoros(unsigned int z, unsigned int x, unsigned int y, Jugador *jugador);
-	void colocarTesoros(Jugador *jugador);
+	void colocarTesoros(Jugador* jugador);
+
+	void activarCasillero(Jugador* jugador);
 
 	/*
 	 * pre:
 	 * post:
 	 */
-	void colocarEspias(unsigned int z, unsigned int x, unsigned int y, Jugador jugador);
+	void colocarEspias(Jugador* jugador);
 
 	/*
 	 * pre:
 	 * post:
 	 */
-	void colocarTesoroMina(unsigned int z, unsigned int x, unsigned int y, Jugador jugador);
+	void colocarTesoroMina(Jugador* jugador);
 
 	/*
 	 * pre:
@@ -106,6 +102,8 @@ public:
 	 * post:
 	 */
 	void JugarCarta(Jugador *jugador);
+
+	void eliminarJugador(unsigned int posicion);
 };
 
 #endif /* TESOROBINARIO_H_ */
