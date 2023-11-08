@@ -105,32 +105,88 @@ public:
 	 */
 	void eliminarCartaDeLaMano(unsigned int posicion);
 
+	/*
+	 * pre:
+	 * post: devuelve los casilleros desactivados.
+	 */
 	unsigned int getCasillerosDesactivados();
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	void setCasillerosDesactivados(unsigned int casillerosDesactivados);
 
+	/*
+	 * pre:
+	 * post: devuelve los casilleros Activados.
+	 */
 	unsigned int getCasillerosActivados();
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	void setCasilleroActivados(unsigned int casillerosActivados);
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	unsigned int getTurnoRecuperarTesoro(int posicion);
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	void setTurnoRecuperarTesoro(int posicion, unsigned int turno);
 
+	/*
+	 * pre: la posicion debe ser valida.
+	 * post: devuelve el casillero de la posicion.
+	 */
 	Casillero* getCasillero(int posicion);
 
+	/*
+	 * pre: la posicion debe ser valida.
+	 * post: coloca una ficha en el casillero.
+	 */
 	void setCasillero(int posicion, Casillero* casillero);
 
+	/*
+	 * pre:
+	 * post: devuelve la cantidad de minas permitidas por jugador.
+	 */
 	unsigned int getCantidadDeMinasPermitidas();
 
+	/*
+	 * pre:
+	 * post: pone en cantidadDeMinasPermitidas la cantidad indicada
+	 */
 	void setCantidadDeMinasPermitidas(unsigned int cantidad);
 
+	/*
+	 * pre:
+	 * post: devuelve la cantidad de minas colocadas.
+	 */
 	unsigned int getCantidadDeMinasPuestas();
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	void setCantidadDeMinasPuestas(unsigned int cantidad);
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	bool getMinaEncontrada();
 
+	/*
+	 * pre:
+	 * post:
+	 */
 	void setMinaEncontrada(bool estadoMina);
 
 	//Lista<Casillero*> *getCasilleros();

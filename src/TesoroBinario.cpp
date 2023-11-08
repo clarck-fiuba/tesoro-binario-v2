@@ -7,12 +7,13 @@
 #include "TesoroBinario.h"
 
 TesoroBinario::TesoroBinario(unsigned int numeroJugadores) {
+	validarCantidadDeJugadores(numeroJugadores);
 	this->numeroJugadores = numeroJugadores;
 	this->jugadores = new Lista<Jugador *>();
 	for(unsigned int i = 1; i <= numeroJugadores; i++) {
 		this->jugadores->agregarElemento(new Jugador(i));
 	}
-	this->tablero = new Tablero(numeroJugadores/2, numeroJugadores * 10, numeroJugadores * 10);
+	this->tablero = new Tablero(numeroJugadores/2, numeroJugadores * ANCHO, numeroJugadores * ALTO);
 	this->funcionalidadCartas = new FuncionalidadCartas(this->tablero);
 	this->turnos = 0;
 	this->cantidadDeTesoros = 0;
@@ -41,6 +42,7 @@ void TesoroBinario::configurarCantidadDeTesoros(unsigned int cantidadDeTesoros) 
 }
 
 Jugador* TesoroBinario::getJugador(unsigned int posicion) {
+	validarPosicion(posicion);
 	return this->jugadores->obtenerElemento(posicion);
 }
 
@@ -50,12 +52,7 @@ Lista<Jugador* > *TesoroBinario::getJugadores() {
 
 Casillero* TesoroBinario::ingresoDeCoordenadas() {
 	unsigned int z, x, y;
-	std::cout << "Z: ";
-	std::cin >> z;
-	std::cout << "X: ";
-	std::cin >> x;
-	std::cout << "Y: ";
-	std::cin >> y;
+	validarCoordenada(z, x, y);
 	return this->tablero->getCasillero(z, x, y);
 }
 
@@ -67,13 +64,17 @@ void TesoroBinario::setTurno(unsigned int turno) {
 	this->turnos = turno;
 }
 
+/*
 void TesoroBinario::colocarTesoros(unsigned int z, unsigned int x, unsigned int y, Jugador *jugador) {
-	//validar que el tablero este vacio y que la casilla no tenga un tesoro enemigo
-	this->tablero->getCasillero(z, x, y)->setEstado(LLENO);
-	this->tablero->getCasillero(z, x, y)->colocarFicha(new Ficha(TESORO));
-	this->tablero->getCasillero(z, x, y)->setPropietario(jugador->getNumeroJugador());
-}
+	//validar casilla no tenga un tesoro enemigo
+	if (this->tablero->getCasillero(z, x, y)->getEstado() == VACIA){
+		this->tablero->getCasillero(z, x, y)->setEstado(LLENO);
+		this->tablero->getCasillero(z, x, y)->colocarFicha(new Ficha(TESORO));
+		this->tablero->getCasillero(z, x, y)->setPropietario(jugador->getNumeroJugador());
+	}
 
+}
+ */
 void TesoroBinario::colocarTesoros(Jugador* jugador) {
 	std::cout << "Jugador " << jugador->getNumeroJugador() << std::endl;
 	std::cout << "Ingrese la coordenada de su " << jugador->getCantidadDeTesoros()+1 << " tesoro:" << std::endl;
@@ -85,7 +86,7 @@ void TesoroBinario::colocarTesoros(Jugador* jugador) {
 		jugador->setCantidadDeTesoros(jugador->getCantidadDeTesoros()+1);
 		Jugador* jugadorDelTesoro = this->getJugador(casillero->getPropietario());
 		std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
-				  << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
+																  << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
 		//jugador->setNumeroDeTurno(jugador->getNumeroTurno()+1);
 	}
 	else {
@@ -120,7 +121,7 @@ void TesoroBinario::activarCasillero(Jugador* jugador) {
 		std::cout << "Indice: " << indice << std::endl;
 		std::cout << this->turnos << " - " << jugador->getTurnoRecuperarTesoro(indice) << std::endl;
 		if(jugador->getCasillero(indice)->getEstado() == INACTIVA &&
-		   this->turnos >= jugador->getTurnoRecuperarTesoro(indice)) {
+				this->turnos >= jugador->getTurnoRecuperarTesoro(indice)) {
 			jugador->setCasilleroActivados(indice + 1);
 			std::cout << "Activar Casilla" << std::endl;
 		}
@@ -155,44 +156,35 @@ void TesoroBinario::colocarEspias(Jugador* jugador) {
 							//pregunta al jugador si quiere usar o no la carta;
 							funcionalidadCartas->romperBlindaje(jugador, this->getJugadores() , casillero);
 						}
-				else {
-					std::cout << "Tesoro encontrado" << std::endl;
-					casillero->setEstado(INACTIVA);
-					//jugador->setCasillero(casillero);
-					//jugador->getCasilleros()->asignarElemento(casillero, 1);
-					unsigned int indice = jugador->getCasillerosDesactivados();
-					jugador->setCasillero(indice, casillero);
-					jugador->setTurnoRecuperarTesoro(indice, this->turnos + 5);
-					std::cout << "Turno para activar casilla: " << jugador->getTurnoRecuperarTesoro(indice) << std::endl;
-					jugador->setCasillerosDesactivados(indice + 1);
-					unsigned int i = 1;
-					unsigned int dueñoCasillero = casillero->getPropietario();
-					while(jugadores->obtenerElemento(i)->getNumeroJugador() != dueñoCasillero) {
-						i++;
+						else {
+							std::cout << "Tesoro encontrado" << std::endl;
+							casillero->setEstado(INACTIVA);
+							//jugador->setCasillero(casillero);
+							//jugador->getCasilleros()->asignarElemento(casillero, 1);
+							unsigned int indice = jugador->getCasillerosDesactivados();
+							jugador->setCasillero(indice, casillero);
+							jugador->setTurnoRecuperarTesoro(indice, this->turnos + 5);
+							std::cout << "Turno para activar casilla: " << jugador->getTurnoRecuperarTesoro(indice) << std::endl;
+							jugador->setCasillerosDesactivados(indice + 1);
+							eliminarTesoro(jugador, casillero, this->jugadores);
+						}
 					}
-					Jugador* jugadorDelTesoro = this->getJugador(i);
-					//Jugador* jugadorDelTesoro = this->getJugador(casillero->getPropietario());
-					//Jugador* jugadorDelTesoro = this->jugadores->obtenerElemento(indice)->getNumeroJugador();
-					jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
-					std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
-							<< " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
+					else {
+						std::cout << "Se encuentra un tesoro suyo en esa casilla." << std::endl;
+						this->colocarEspias(jugador);
+					}
+				}
+				else if(casillero->getTipoFicha() == MINA) {
+					mina = true;
+					casillero->quitarFicha();
+					casillero->setEstado(VACIA);
+					std::cout << "Espia eliminado" << std::endl;
+					jugador->setMinaEncontrada(mina);
 				}
 			}
-			else {
-				std::cout << "Se encuentra un tesoro suyo en esa casilla." << std::endl;
-				this->colocarEspias(jugador);
-			}
-		}
-		else if(casillero->getTipoFicha() == MINA) {
-			mina = true;
-			casillero->quitarFicha();
-			casillero->setEstado(VACIA);
-			std::cout << "Espia eliminado" << std::endl;
-			jugador->setMinaEncontrada(mina);
 		}
 	}
 }
-
 void TesoroBinario::colocarTesoroMina(Jugador *jugador) {
 	if(jugador->getMinaEncontrada() == false) {
 		jugador->setCantidadDeMinasPuestas(jugador->getCantidadDeMinasPuestas() + 1);
@@ -219,28 +211,19 @@ void TesoroBinario::colocarTesoroMina(Jugador *jugador) {
 					unsigned int indice = jugador->getCasillerosDesactivados();
 					jugador->setCasillero(indice, casillero);
 					jugador->setTurnoRecuperarTesoro(indice, this->turnos + 5);
-							std::cout << "Turno para activar casilla: " << jugador->getTurnoRecuperarTesoro(indice) << std::endl;
-							jugador->setCasillerosDesactivados(indice + 1);
-							unsigned int i = 1;
-							unsigned int dueñoCasillero = casillero->getPropietario();
-							while(jugadores->obtenerElemento(i)->getNumeroJugador() != dueñoCasillero) {
-								i++;
-							}
-							Jugador* jugadorDelTesoro = this->getJugador(i);
-							jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
-							std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
-							 << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
-						}
-					}
+					std::cout << "Turno para activar casilla: " << jugador->getTurnoRecuperarTesoro(indice) << std::endl;
+					jugador->setCasillerosDesactivados(indice + 1);
+					eliminarTesoro(jugador, casillero, this->jugadores);
 				}
 			}
 		}
-	}
-	else {
-		return;
+	}else{
+		return ;
 	}
 
 }
+
+
 
 void TesoroBinario::mostrarMasoCarta(Jugador* jugador) {
 	for(unsigned int i = 1; i <= jugador->getManoCarta()->contarElementos(); i++) {
@@ -264,21 +247,21 @@ void TesoroBinario::JugarCarta(Jugador *jugador) {
 	std::cin >> numeroCarta;
 	//validar numero carta
 	switch(jugador->getManoCarta()->obtenerElemento(numeroCarta)->getTipoDeCarta()) {
-		case BLINDAJE:
-			this->funcionalidadCartas->blindarCarta(jugador);
-			break;
-		case RADAR:
-			this->funcionalidadCartas->radar(jugador);
-			break;
-		case PARTIR_TESORO:
-			this->funcionalidadCartas->partirTesoro(jugador);
-			break;
-		case AGREGAR_MINA:
-			this->funcionalidadCartas->agregarTesoroMina(jugador);
-			break;
-		case ELIMINAR_CARTA:
-			this->funcionalidadCartas->eliminarCartaEnemiga(jugador, this->jugadores);
-			break;
+	case BLINDAJE:
+		this->funcionalidadCartas->blindarCarta(jugador);
+		break;
+	case RADAR:
+		this->funcionalidadCartas->radar(jugador);
+		break;
+	case PARTIR_TESORO:
+		this->funcionalidadCartas->partirTesoro(jugador);
+		break;
+	case AGREGAR_MINA:
+		this->funcionalidadCartas->agregarTesoroMina(jugador);
+		break;
+	case ELIMINAR_CARTA:
+		this->funcionalidadCartas->eliminarCartaEnemiga(jugador, this->jugadores);
+		break;
 	}
 	jugador->eliminarCartaDeLaMano(numeroCarta);
 	this->mostrarMasoCarta(jugador);
@@ -293,5 +276,17 @@ void TesoroBinario::eliminarJugador(unsigned int posicion) {
 }
 
 
+void eliminarTesoro(Jugador * jugador, Casillero *casillero, Lista<Jugador *> *jugadores){
 
+	unsigned int i = 1;
+	unsigned int dueñoCasillero = casillero->getPropietario();
+	while(jugadores->obtenerElemento(i)->getNumeroJugador() != dueñoCasillero) {
+		i++;
+	}
+	Jugador* jugadorDelTesoro = jugadores->obtenerElemento(i);
+	jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
+	std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
+																					 << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
+
+}
 

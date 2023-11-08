@@ -76,20 +76,20 @@ public:
 
 	/*
 	 * pre: El jugador debe ser distinto de NULL.
-	 * post:
+	 * post: agrega al maso de cartas un tesoro mina.
 	 */
 	void agregarTesoroMina(Jugador* jugador);
 
 
 	/*
 	 * pre: El jugador debe ser distinto de NULL.
-	 * post:
+	 * post: rompe el blindaje y automaticamente recupera el tesoro.S
 	 */
 	void romperBlindaje(Jugador* jugador, Lista<Jugador *> *jugadores, Casillero * casillero);
 
 	/*
 	 * pre: El jugador debe ser distinto de NULL.
-	 * post:
+	 * post: elimina una carta al jugador enemigo, dejandolo con una carta mejor que utilizar.
 	 */
 	void eliminarCartaEnemiga(Jugador* jugador, Lista<Jugador *> *jugadores);
 
