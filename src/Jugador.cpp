@@ -34,35 +34,36 @@ Jugador::Jugador(unsigned int numeroJugador) {
 	this->numeroTurno = 0;
 	this->minaEncontrada = true;
 	this->numeroRandom = 1;
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < TURNO_DE_RECUPERAR_TESORO ; i++) {
 		this->turnoRecuperarTesoro[i] = 0;
 	}
-	//this->numeroRandom = 0;
 	this->manoDeCartas = new Lista<Carta *>();
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < TURNO_DE_RECUPERAR_TESORO; i++) {
 		this->casilleros[i] = NULL;
 	}
-	/*this->casilleros = new Lista<Casillero* >();
-	for(unsigned int i = 1; i <= 3; i++) {
-		this->casilleros->agregarElemento(NULL);
-	}*/
 	this->casillerosDesactivados = 0;
 	this->casillerosActivados = 0;
-	for(unsigned int i = 1; i <= 3; i++) {
-	//	std::random_device rd;
-	//	std::mt19937 mt(rd());
-	//	std::uniform_int_distribution<int> dist(1, 3);
-	//	this->numeroRandom = dist(mt);
+	for(unsigned int i = 1; i <= CANTIDAD_DE_CARTAS; i++) {
+		//	std::random_device rd;
+		//	std::mt19937 mt(rd());
+		//	std::uniform_int_distribution<int> dist(1, 3);
+		//	this->numeroRandom = dist(mt);
 		switch(numeroRandom) {
-			case 1:
-				this->manoDeCartas->agregarElemento(new Carta(BLINDAJE));
-				break;
-			case 2:
-				this->manoDeCartas->agregarElemento(new Carta(RADAR));
-				break;
-			case 3:
-				this->manoDeCartas->agregarElemento(new Carta(PARTIR_TESORO));
-				break;
+		case 1:
+			this->manoDeCartas->agregarElemento(new Carta(BLINDAJE));
+			break;
+		case 2:
+			this->manoDeCartas->agregarElemento(new Carta(RADAR));
+			break;
+		case 3:
+			this->manoDeCartas->agregarElemento(new Carta(PARTIR_TESORO));
+			break;
+		case 4:
+			this->manoDeCartas->agregarElemento(new Carta(AGREGAR_MINA));
+			break;
+		case 5:
+			this->manoDeCartas->agregarElemento(new Carta(ELIMINAR_CARTA));
+			break;
 		}
 	}
 }
@@ -167,11 +168,4 @@ void Jugador::setMinaEncontrada(bool estadoMina) {
 	this->minaEncontrada = estadoMina;
 }
 
-/*
-Lista<Casillero*> *Jugador::getCasilleros() {
-	return this->casilleros;
-}*/
 
-/*void Jugador::setCasillero(Casillero* casillero) {
-	this->casillero = casillero;
-}*/

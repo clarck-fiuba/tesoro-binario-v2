@@ -62,18 +62,18 @@ private:
 
 		std::cout << "Z: ";
 		std::cin >> z;
-		if(z < 1 || z > this->numeroJugadores / 2) {
+		if(z < 1 || z > this->numeroJugadores / CAPA) {
 			throw std::runtime_error("La coordenada z esta mal ingresada");
 		}
 		std::cout << "X: ";
 		std::cin >> x;
-		if(x < 1 || x > this->numeroJugadores* ANCHO) {
+		if(x < 1 || x > this->numeroJugadores * ANCHO) {
 			throw std::runtime_error("La coordenada x esta mal ingresada");
 		}
 
 		std::cout << "Y: ";
 		std::cin >> y;
-		if(y < 1 || y > this->numeroJugadores* ALTO) {
+		if(y < 1 || y > this->numeroJugadores * ALTO) {
 			throw std::runtime_error("La coordenada y esta mal ingresada");
 		}
 	}
@@ -153,9 +153,9 @@ public:
 	void colocarTesoros(Jugador* jugador);
 
 
-	/* NO SE PARA QUE SE USA
+	/*
 	 * pre:
-	 * post:
+	 * post:activa la casilla una vez recuperado el tesoro.
 	 */
 	void activarCasillero(Jugador* jugador);
 

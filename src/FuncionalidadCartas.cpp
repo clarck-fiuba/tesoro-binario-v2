@@ -12,6 +12,7 @@ void FuncionalidadCartas::validarTablero(Tablero* tablero) {
 	}
 }
 
+//VALIDAR INGRESO
 Casillero* FuncionalidadCartas::ingresoDeCoordenadas() {
 	unsigned int z, x, y;
 	std::cout << "Z: ";
@@ -137,9 +138,7 @@ void  FuncionalidadCartas::romperBlindaje(Jugador* jugador, Lista<Jugador *> *ju
 	while(jugadores->obtenerElemento(i)->getNumeroJugador() != duenioCasillero) {
 		i++;
 	}
-	Jugador* jugadorDelTesoro = jugadores->obtenerElemento(i);
-	//Jugador* jugadorDelTesoro = this->getJugador(casillero->getPropietario());
-	//Jugador* jugadorDelTesoro = this->jugadores->obtenerElemento(indice)->getNumeroJugador();
+	Jugador * jugadorDelTesoro = jugadores->obtenerElemento(i);
 	jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
 	std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
 	<< " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;

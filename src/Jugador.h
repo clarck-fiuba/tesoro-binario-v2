@@ -13,6 +13,7 @@
 #include "Carta.h"
 #include "Casillero.h"
 #include "Ficha.h"
+#include "Constantes.h"
 
 class Jugador {
 private:
@@ -24,10 +25,8 @@ private:
 	int numeroRandom;
 	bool minaEncontrada;
 	Lista<Carta *> *manoDeCartas;
-	Casillero* casilleros[4];
-	//Lista<Casillero* > *casilleros;
-	//Lista<unsigned int> *turnoRecuperarTesoro;
-	unsigned int turnoRecuperarTesoro[4];
+	Casillero* casilleros[TURNO_DE_RECUPERAR_TESORO];
+	unsigned int turnoRecuperarTesoro[TURNO_DE_RECUPERAR_TESORO];
 	unsigned int casillerosDesactivados;
 	unsigned int casillerosActivados;
 
@@ -189,9 +188,7 @@ public:
 	 */
 	void setMinaEncontrada(bool estadoMina);
 
-	//Lista<Casillero*> *getCasilleros();
 
-	//void setCasillero(Casillero* casillero);
 };
 
 #endif /* JUGADOR_H_ */
