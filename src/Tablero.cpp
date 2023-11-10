@@ -7,13 +7,49 @@
 
 #include "Tablero.h"
 
+void Tablero::validarAnchoLargoYProfundidad(unsigned int profundidad, unsigned int ancho, unsigned int alto) {
+	if(profundidad < 1) {
+		throw std::runtime_error("La profundidad ingresada es un numero no valido");
+	}
+	if(ancho < 1) {
+		throw std::runtime_error("El ancho ingresado es un numero no valido");
+	}
+	if(alto < 1) {
+		throw std::runtime_error("El alto ingresado es un numero no valido");
+	}
+}
+
+void Tablero::validarCoordenadaCasillero(unsigned int z, unsigned int x, unsigned int y){
+	if(z < 1 || z > this->profundidad) {
+		throw std::runtime_error("La coordenada z esta mal ingresada");
+	}
+	if(x < 1 || x > this->ancho) {
+		throw std::runtime_error("La coordenada x esta mal ingresada");
+	}
+	if(y < 1 || y > this->alto) {
+		throw std::runtime_error("La coordenada y esta mal ingresada");
+	}
+}
+
+void Tablero::validarCasillero(Casillero* casillero) {
+	if(casillero == NULL) {
+		throw std::runtime_error("El casillero debe estar inicializado");
+	}
+}
+
+void Tablero::validarTablero() {
+	if(this->tablero == NULL) {
+		throw std::runtime_error("El tablero debe estar inicializado");
+	}
+}
+
 Tablero::Tablero(unsigned int profundidad, unsigned int ancho, unsigned int alto) {
 	this->validarAnchoLargoYProfundidad(profundidad, ancho, alto);
 	this->profundidad = profundidad;
 	this->ancho = ancho;
 	this->alto = alto;
 	this->rangoVecinos = (this->ancho)/10;
-	this->volumenCuboVecinos = (this->rangoVecinos*2)+1;
+	this->dimensionCuboVecinos = (this->rangoVecinos*2)+1;
 	this->tablero = new Lista<Lista<Lista<Casillero *> *> *>();
 	for(unsigned int i = 1; i <= profundidad; i++) {
 		Lista<Lista<Casillero *> *> *capa = new Lista<Lista<Casillero *> *>();
@@ -49,30 +85,6 @@ Tablero::~Tablero() {
 	delete this->tablero;
 }
 
-void Tablero::validarAnchoLargoYProfundidad(unsigned int profundidad, unsigned int ancho, unsigned int alto) {
-	if(profundidad < 1) {
-		throw "La profundidad ingresada es un numero no valido";
-	}
-	if(ancho < 1) {
-		throw "El ancho ingresado es un numero no valido";
-	}
-	if(alto < 1) {
-		throw "El alto ingresado es un numero no valido";
-	}
-}
-
-void Tablero::validarCoordenadaCasillero(unsigned int z, unsigned int x, unsigned int y){
-	if(z < 1 || z > this->profundidad) {
-		throw "La coordenada z esta mal ingresada";
-	}
-	if(x < 1 || x > this->ancho) {
-		throw "La coordenada x esta mal ingresada";
-	}
-	if(y < 1 || y > this->alto) {
-		throw "La coordenada y esta mal ingresada";
-	}
-}
-
 unsigned int Tablero::getProfundidad() {
 	return this->profundidad;
 }
@@ -86,12 +98,8 @@ unsigned int Tablero::getAlto() {
 }
 
 Casillero *Tablero::getCasillero(unsigned int z, unsigned int x, unsigned int y) {
-	this->validarCoordenadaCasillero(x, y, z);
+	this->validarCoordenadaCasillero(z, x, y);
 	return this->tablero->obtenerElemento(z)->obtenerElemento(x)->obtenerElemento(y);
-}
-
-int Tablero::getRangoVecinos() {
-	return this->rangoVecinos;
 }
 
 bool Tablero::existeCasillero(unsigned int z, unsigned int x, unsigned int y) {
@@ -104,12 +112,14 @@ bool Tablero::existeCasillero(unsigned int z, unsigned int x, unsigned int y) {
 }
 
 void Tablero::inicializarCuboVecinos(Casillero *casillero) {
+	this->validarCasillero(casillero);
 	casillero->setRangoVecinos(this->rangoVecinos);
-	casillero->setVolumenCuboVecinos(this->volumenCuboVecinos);
+	casillero->setDimensionCuboVecinos(this->dimensionCuboVecinos);
 	casillero->inicializarCuboVecinos();
 }
 
 void Tablero::configurarCuboVecinos() {
+	this->validarTablero();
 	this->tablero->iniciarCursor();
 	while(this->tablero->avanzarCursor()) {
 		Lista<Lista<Casillero *> *> *capa = this->tablero->obtenerCursor();

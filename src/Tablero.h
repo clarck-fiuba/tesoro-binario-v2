@@ -17,7 +17,7 @@ private:
 	unsigned int ancho;
 	unsigned int alto;
 	int rangoVecinos;
-	int volumenCuboVecinos;
+	int dimensionCuboVecinos;
 
 	/*
 	 * pre: -
@@ -31,34 +31,46 @@ private:
 	 */
 	void validarCoordenadaCasillero(unsigned int x, unsigned int y, unsigned int z);
 
+	/*
+	 * pre: -
+	 * post: Valida que el casillero sea distinto de NULL.
+	 */
+	void validarCasillero(Casillero* casillero);
+
+	/*
+	 * pre: -
+	 * post: Valida si el tablero es distinto de NULL.
+	 */
+	void validarTablero();
+
 public:
 	/*
-	 * pre:
-	 * post:
+	 * pre: La profundidad, el ancho y alto deben ser mayor o igual a 1.
+	 * post: Crea el tablero con las dimensiones pasadas por parámetro.
 	 */
 	Tablero(unsigned int profundidad, unsigned int ancho, unsigned int alto);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Elimina de forma correcta el tablero.
 	 */
 	virtual ~Tablero();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Devuelve la profundidad del tablero.
 	 */
 	unsigned int getProfundidad();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Devuelve el ancho del tablero.
 	 */
 	unsigned int getAncho();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Devuelve el alto del tablero.
 	 */
 	unsigned int getAlto();
 
@@ -72,26 +84,23 @@ public:
 	Casillero *getCasillero(unsigned int z, unsigned int x, unsigned int y);
 
 	/*
-	 * pre:
-	 * post:
-	 */
-	int getRangoVecinos();
-
-	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna verdadero si las coordenadas z, x e y son correctas.
 	 */
 	bool existeCasillero(unsigned int z, unsigned int x, unsigned int y);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El casillero no debe de ser NULL, debe ya estar inicializado.
+	 * post: Inicializa el cubo de los vecinos
+	 * 		 actualizando el valor del rango de busqueda de los vecinos,
+	 * 		 la dimension del cubo de los vecinos e
+	 * 		 inicializando el cubo de vecino del casillero pasado por parámetro.
 	 */
 	void inicializarCuboVecinos(Casillero *casillero);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El tablero debe estar inicializado y tambien haber llamado al método inicializarCuboVecinos().
+	 * post: Configura el cubo de vecinos de cada casillero con sus respectivos vecinos.
 	 */
 	void configurarCuboVecinos();
 };

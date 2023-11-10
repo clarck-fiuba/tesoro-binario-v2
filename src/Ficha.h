@@ -7,6 +7,7 @@
 
 #ifndef FICHA_H_
 #define FICHA_H_
+#include <iostream>
 
 enum TipoDeFicha{
 	TESORO,
@@ -18,26 +19,32 @@ class Ficha {
 private:
 	TipoDeFicha tipoDeFicha;
 
+	/*
+	 * pre: -
+	 * post: Verifica que nuevoTipoDeFicha sea correcto.
+	 */
+	void validarTipoDeFicha(TipoDeFicha tipoDeFicha);
+
 public:
 	/*
-	 * pre:
-	 * post:
+	 * pre: El tipo de ficha debe ser: TESORO, ESPIA o MINA
+	 * post: Ficha con el tipo de ficha pasado por parámetro.
 	 */
 	Ficha(TipoDeFicha tipoDeFicha);
 
 	virtual ~Ficha();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Devuelve el tipo de ficha, ya sea: TESORO, ESPIA o MINA.
 	 */
 	TipoDeFicha getTipoFicha();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El tipo de ficha debe ser: TESORO, ESPIA o MINA.
+	 * post: Cambia el tipo de ficha por el pasado por parámetro.
 	 */
-	void setTipoFicha(TipoDeFicha nuevaFicha);
+	void setTipoFicha(TipoDeFicha nuevoTipoDeFicha);
 };
 
 #endif /* FICHA_H_ */
