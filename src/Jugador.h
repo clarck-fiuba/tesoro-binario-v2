@@ -13,9 +13,11 @@
 #include "Carta.h"
 #include "Casillero.h"
 #include "Ficha.h"
+#include "BMPTablero.h"
 
 class Jugador {
 private:
+	bool jugadorVivo;
 	unsigned int numeroJugador;
 	unsigned int cantidadDeTesoros;
 	unsigned int cantidadDeMinasPuestas;
@@ -24,12 +26,16 @@ private:
 	int numeroRandom;
 	bool minaEncontrada;
 	Lista<Carta *> *manoDeCartas;
-	Casillero* casilleros[4];
-	//Lista<Casillero* > *casilleros;
-	//Lista<unsigned int> *turnoRecuperarTesoro;
-	unsigned int turnoRecuperarTesoro[4];
+	Lista<Casillero* > *casillerosDeTesoroEncontrado;
+	Lista<unsigned int> *turnoRecuperarTesoro;
 	unsigned int casillerosDesactivados;
 	unsigned int casillerosActivados;
+	BMPTablero *tableroJugador;
+	BMP *tablero;
+	BMP *tesoro;
+	BMP *espia;
+	BMP *mina;
+	std::string nombreTablero;
 
 	/*
 	 * pre: -
@@ -115,11 +121,13 @@ public:
 
 	unsigned int getTurnoRecuperarTesoro(int posicion);
 
-	void setTurnoRecuperarTesoro(int posicion, unsigned int turno);
+	void setTurnoRecuperarTesoro(unsigned int turno);
 
-	Casillero* getCasillero(int posicion);
+	Lista<Casillero* > *getListaCasillerosDesactivados();
 
-	void setCasillero(int posicion, Casillero* casillero);
+	Casillero* getCasillerosConTesorosEncontrados(int posicion);
+
+	void setCasillerosConTesorosEncontrados(Casillero* casillero);
 
 	unsigned int getCantidadDeMinasPermitidas();
 
@@ -131,11 +139,19 @@ public:
 
 	bool getMinaEncontrada();
 
-	void setMinaEncontrada();
+	void setMinaEncontrada(bool minaEncontrada);
 
-	//Lista<Casillero*> *getCasilleros();
+	void crearTableroJugador(int profundidad, int filas, int columnas);
 
-	//void setCasillero(Casillero* casillero);
+	void pintarTesoro(int z, int x, int y);
+
+	void pintarEspia(int z, int x, int y);
+
+	void pintarMina(int z, int x, int y);
+
+	bool getEstadoJugador();
+
+	void jugadorEliminado();
 };
 
 #endif /* JUGADOR_H_ */

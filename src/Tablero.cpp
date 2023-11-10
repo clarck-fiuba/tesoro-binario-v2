@@ -98,7 +98,7 @@ unsigned int Tablero::getAlto() {
 }
 
 Casillero *Tablero::getCasillero(unsigned int z, unsigned int x, unsigned int y) {
-	this->validarCoordenadaCasillero(x, y, z);
+	this->validarCoordenadaCasillero(z, x, y);
 	return this->tablero->obtenerElemento(z)->obtenerElemento(x)->obtenerElemento(y);
 }
 

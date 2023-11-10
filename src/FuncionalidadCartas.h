@@ -73,6 +73,24 @@ public:
 	 * 		 colocar un tesoro.
 	 */
 	void partirTesoro(Jugador* jugador);
+
+	/*
+	 * pre: El jugador debe ser distinto de NULL.
+	 * post: Permite que el jugador pueda ingresar un tesoro mina más.
+	 */
+	void agregarTesoroMina(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void romperBlindaje(Jugador* jugador, Lista<Jugador* >* jugadores, Casillero* casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void eliminarCartaEnemiga(Jugador* jugador, Lista<Jugador* >* jugadores);
 };
 
 #endif /* FUNCIONALIDADCARTAS_H_ */

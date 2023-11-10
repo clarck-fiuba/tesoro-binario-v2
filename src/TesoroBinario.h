@@ -16,6 +16,7 @@
 class TesoroBinario {
 private:
 	unsigned int numeroJugadores;
+	unsigned int numeroJugadoresVivos;
 	Lista<Jugador *> *jugadores;
 	Tablero *tablero;
 	FuncionalidadCartas* funcionalidadCartas;
@@ -101,9 +102,13 @@ public:
 	 * pre:
 	 * post:
 	 */
-	void JugarCarta(Jugador *jugador);
+	void jugarCarta(Jugador *jugador);
 
 	void eliminarJugador(unsigned int posicion);
+
+	void setJugadoresVivos(unsigned int jugadores);
+
+	unsigned int getJugadoresVivos();
 };
 
 #endif /* TESOROBINARIO_H_ */

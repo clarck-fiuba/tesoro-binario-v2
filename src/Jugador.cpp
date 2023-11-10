@@ -27,30 +27,31 @@ void Jugador::validarNumeroTurno(unsigned int numeroTurno) {
 
 Jugador::Jugador(unsigned int numeroJugador) {
 	this->validarNumeroJugador(numeroJugador);
+	this->jugadorVivo = true;
+	this->tableroJugador = NULL;
+	this->tablero = new BMP();
+	this->tesoro = new BMP();
+	this->espia = new BMP();
+	this->mina = new BMP();
+	this->tesoro->ReadFromFile("Tesoro.bmp");
+	this->espia->ReadFromFile("Espia.bmp");
+	this->mina->ReadFromFile("Mina.bmp");
 	this->numeroJugador = numeroJugador;
+	this->nombreTablero = "Tablero " + std::to_string(this->numeroJugador) + ".bmp";
 	this->cantidadDeTesoros = 0;
 	this->cantidadDeMinasPermitidas = 3;
 	this->cantidadDeMinasPuestas = 0;
 	this->numeroTurno = 0;
 	this->minaEncontrada = true;
-	for(int i = 0; i < 4; i++) {
-		this->turnoRecuperarTesoro[i] = 0;
-	}
-	//this->numeroRandom = 0;
-	this->manoDeCartas = new Lista<Carta *>();
-	for(int i = 0; i < 4; i++) {
-		this->casilleros[i] = NULL;
-	}
-	/*this->casilleros = new Lista<Casillero* >();
-	for(unsigned int i = 1; i <= 3; i++) {
-		this->casilleros->agregarElemento(NULL);
-	}*/
 	this->casillerosDesactivados = 0;
-	this->casillerosActivados = 0;
+	this->casillerosActivados = 1;
+	this->casillerosDeTesoroEncontrado = new Lista<Casillero* >();
+	this->turnoRecuperarTesoro = new Lista<unsigned int>();
+	this->manoDeCartas = new Lista<Carta* >();
 	for(unsigned int i = 1; i <= 3; i++) {
 		std::random_device rd;
 		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, 3);
+		std::uniform_int_distribution<int> dist(1, 6);
 		this->numeroRandom = dist(mt);
 		switch(numeroRandom) {
 			case 1:
@@ -62,6 +63,15 @@ Jugador::Jugador(unsigned int numeroJugador) {
 			case 3:
 				this->manoDeCartas->agregarElemento(new Carta(PARTIR_TESORO));
 				break;
+			case 4:
+				this->manoDeCartas->agregarElemento(new Carta(AGREGAR_MINA));
+				break;
+			case 5:
+				this->manoDeCartas->agregarElemento(new Carta(ROMPER_BLINDAJE));
+				break;
+			case 6:
+				this->manoDeCartas->agregarElemento(new Carta(ELIMINAR_CARTA));
+				break;
 		}
 	}
 }
@@ -72,6 +82,19 @@ Jugador::~Jugador() {
 		delete this->manoDeCartas->obtenerCursor();
 	}
 	delete this->manoDeCartas;
+	delete this->tablero;
+	delete this->tesoro;
+	delete this->espia;
+	delete this->mina;
+	this->casillerosDeTesoroEncontrado->iniciarCursor();
+	while(this->casillerosDeTesoroEncontrado->avanzarCursor()) {
+		if(this->casillerosDeTesoroEncontrado->obtenerCursor() != NULL) {
+			delete this->casillerosDeTesoroEncontrado->obtenerCursor();
+		}
+	}
+	delete this->casillerosDeTesoroEncontrado;
+	delete this->turnoRecuperarTesoro;
+	delete this->tableroJugador;
 }
 
 unsigned int Jugador::getNumeroJugador() {
@@ -109,9 +132,6 @@ unsigned int Jugador::getCasillerosDesactivados() {
 }
 
 void Jugador::setCasillerosDesactivados(unsigned int casillerosDesactivados) {
-	/*if(casillerosDesactivados > 2) {
-		this->casillerosDesactivados = 0;
-	}*/
 	this->casillerosDesactivados = casillerosDesactivados;
 }
 
@@ -120,26 +140,27 @@ unsigned int Jugador::getCasillerosActivados() {
 }
 
 void Jugador::setCasilleroActivados(unsigned int casillerosActivados) {
-	/*if(casillerosActivados > 2) {
-		this->casillerosActivados = 0;
-	}*/
 	this->casillerosActivados = casillerosActivados;
 }
 
 unsigned int Jugador::getTurnoRecuperarTesoro(int posicion) {
-	return this->turnoRecuperarTesoro[posicion];
+	return this->turnoRecuperarTesoro->obtenerElemento(posicion);
 }
 
-void Jugador::setTurnoRecuperarTesoro(int posicion, unsigned int turno) {
-	this->turnoRecuperarTesoro[posicion] = turno;
+void Jugador::setTurnoRecuperarTesoro(unsigned int turno) {
+	this->turnoRecuperarTesoro->agregarElemento(turno);
 }
 
-Casillero* Jugador::getCasillero(int posicion) {
-	return this->casilleros[posicion];
+Lista<Casillero* > *Jugador::getListaCasillerosDesactivados() {
+	return this->casillerosDeTesoroEncontrado;
 }
 
-void Jugador::setCasillero(int posicion, Casillero* casillero) {
-	this->casilleros[posicion] = casillero;
+Casillero* Jugador::getCasillerosConTesorosEncontrados(int posicion) {
+	return this->casillerosDeTesoroEncontrado->obtenerElemento(posicion);
+}
+
+void Jugador::setCasillerosConTesorosEncontrados(Casillero* casillero) {
+	this->casillerosDeTesoroEncontrado->agregarElemento(casillero);
 }
 
 unsigned int Jugador::getCantidadDeMinasPermitidas() {
@@ -162,15 +183,37 @@ bool Jugador::getMinaEncontrada() {
 	return this->minaEncontrada;
 }
 
-void Jugador::setMinaEncontrada() {
-	this->minaEncontrada = !this->minaEncontrada;
+void Jugador::setMinaEncontrada(bool minaEncontrada) {
+	this->minaEncontrada = minaEncontrada;
 }
 
-/*
-Lista<Casillero*> *Jugador::getCasilleros() {
-	return this->casilleros;
-}*/
+void Jugador::crearTableroJugador(int profundidad, int filas, int columnas) {
+	this->tableroJugador = new BMPTablero(profundidad, filas, columnas);
+	this->tableroJugador->guardarTablero(this->nombreTablero);
+	this->tablero->ReadFromFile(this->nombreTablero.c_str());
+}
 
-/*void Jugador::setCasillero(Casillero* casillero) {
-	this->casillero = casillero;
-}*/
+void Jugador::pintarTesoro(int z, int x, int y) {
+	this->tableroJugador->pintarTesoro(z, x, y, *this->tablero, *this->tesoro);
+	this->tablero->WriteToFile(this->nombreTablero.c_str());
+}
+
+void Jugador::pintarEspia(int z, int x, int y) {
+	this->tableroJugador->pintarTesoro(z, x, y, *this->tablero, *this->espia);
+	this->tablero->WriteToFile(this->nombreTablero.c_str());
+}
+
+void Jugador::pintarMina(int z, int x, int y) {
+	this->tableroJugador->pintarMina(z, x, y, *this->tablero, *this->mina);
+	this->tablero->WriteToFile(this->nombreTablero.c_str());
+}
+
+bool Jugador::getEstadoJugador() {
+	return this->jugadorVivo;
+}
+
+void Jugador::jugadorEliminado() {
+	this->jugadorVivo = false;
+}
+
+

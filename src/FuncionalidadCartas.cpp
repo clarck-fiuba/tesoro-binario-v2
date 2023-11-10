@@ -117,6 +117,57 @@ void FuncionalidadCartas::partirTesoro(Jugador* jugador) {
 		}
 	}
 	else {
-		throw std::runtime_error("Casillero mal ingresado");
+		std::cout << "Casillero mal ingresado o inactivo" << std::endl;
+		this->partirTesoro(jugador);
 	}
 }
+
+void FuncionalidadCartas::agregarTesoroMina(Jugador* jugador) {
+	this->validarJugador(jugador);
+	jugador->setCantidadDeMinasPermitidas(jugador->getCantidadDeMinasPermitidas() + 1);
+	std::cout << "Ahora puede colocar " << jugador->getCantidadDeMinasPermitidas() << " tesoros mina" << std::endl;
+}
+
+void FuncionalidadCartas::romperBlindaje(Jugador* jugador, Lista<Jugador* >* jugadores, Casillero* casillero) {
+	this->validarJugador(jugador);
+	//validar lista jugadores
+	//validar casillero
+	std::cout << "Tesoro recuperado" << std::endl;
+	casillero->cambiarFicha(ESPIA);
+	casillero->setEstado(LLENO);
+	unsigned int i = 1;
+	unsigned int dueñoCasillero = casillero->getPropietario();
+	while(jugadores->obtenerElemento(i)->getNumeroJugador() != dueñoCasillero) {
+		i++;
+	}
+	Jugador* jugadorDelTesoro = jugadores->obtenerElemento(i);
+	jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
+	std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
+			  << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
+	casillero->setPropietario(jugador->getNumeroJugador());
+}
+
+void FuncionalidadCartas::eliminarCartaEnemiga(Jugador* jugador, Lista<Jugador* >* jugadores) {
+	this->validarJugador(jugador);
+	unsigned int numeroJugadorAEliminarCarta = 0;
+	std::cout << "Ingrese el numero del jugador que desea eliminar una de sus cartas: ";
+	std::cin >> numeroJugadorAEliminarCarta;
+	unsigned int i = 1;
+	while(jugadores->obtenerElemento(i)->getNumeroJugador() != numeroJugadorAEliminarCarta) {
+		i++;
+	}
+	Jugador* jugadorAEliminarCarta = jugadores->obtenerElemento(i);
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoCarta()->contarElementos());
+	int numeroRandom = dist(mt);
+	jugadorAEliminarCarta->eliminarCartaDeLaMano(numeroRandom);
+}
+
+
+
+
+
+
+
+
