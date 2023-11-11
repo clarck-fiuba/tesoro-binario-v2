@@ -248,15 +248,15 @@ void TesoroBinario::colocarNuevaPosicion(Jugador * jugador, Casillero * casiller
 		this->colocarTesoroNuevo(jugador, casilleroNuevo);
 	}
 	else if (this->movimiento == IZQUIERDA && casilleroNuevo->getX() != 0){
-		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX() - 1, casilleroNuevo->getY()S, casilleroNuevo->getZ());
+		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX() - 1, casilleroNuevo->getY(), casilleroNuevo->getZ());
 		this->colocarTesoroNuevo(jugador, casilleroNuevo);
 	}
 	else if (this->movimiento == MAS_PROFUNDIDAD && casilleroNuevo->getZ() != this->profundidadTablero){/*PREGUNTAR COMO ES EL MAPA*/
-		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX(), casilleroNuevo->getY() + 1, casilleroNuevo->getZ() + 1);
+		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX(), casilleroNuevo->getY() , casilleroNuevo->getZ() + 1);
 		this->colocarTesoroNuevo(jugador, casilleroNuevo);
 	}
 	else if (this->movimiento == MENOS_PROFUNIDAD && casilleroNuevo->getZ() != 0){
-		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX() - 1, casilleroNuevo->getY()S, casilleroNuevo->getZ() - 1);
+		casilleroNuevo = this->nuevasCoordenas(casilleroNuevo->getX() , casilleroNuevo->getY(), casilleroNuevo->getZ() - 1);
 		this->colocarTesoroNuevo(jugador, casilleroNuevo);
 	}
 }
