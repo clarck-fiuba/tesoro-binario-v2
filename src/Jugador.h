@@ -111,46 +111,110 @@ public:
 	 */
 	void eliminarCartaDeLaMano(unsigned int posicion);
 
+	/*pre:
+	 * post: devuelve la cantidad de casilleros desactivados.
+	 */
 	unsigned int getCasillerosDesactivados();
 
+	/*pre:
+	 * post: asigna una cantidad de casilleros desactivados.
+	 */
 	void setCasillerosDesactivados(unsigned int casillerosDesactivados);
 
+	/*pre:
+	 * post: devuelve la canitdad de casilleros activados
+	 */
 	unsigned int getCasillerosActivados();
 
+	/*pre:
+	 * post: asigna la cantidad de casilleros activados por jugador
+	 */
 	void setCasilleroActivados(unsigned int casillerosActivados);
 
+	/*pre:
+	 * post: devuelve el turno en que se va a recuperar el tesoro
+	 */
 	unsigned int getTurnoRecuperarTesoro(int posicion);
 
+	/*pre:
+	 * post: asgina el turno en el cual va a recuperar un tesoro
+	 */
 	void setTurnoRecuperarTesoro(unsigned int turno);
 
+
+	/*pre:
+	 * post:devuelve la lista con los casilleros desactivados.
+	 */
 	Lista<Casillero* > *getListaCasillerosDesactivados();
 
+	/*pre:
+	 * post: devuelve el casillero que encontro el tesoro.
+	 */
 	Casillero* getCasillerosConTesorosEncontrados(int posicion);
 
+	/*pre:
+	 * post: asigna el casillero con el tesoro encontrado
+	 */
 	void setCasillerosConTesorosEncontrados(Casillero* casillero);
 
+	/*pre:
+	 * post: devuelve la cantidad de minas permitidas por jugador
+	 */
 	unsigned int getCantidadDeMinasPermitidas();
 
+	/*pre:
+	 * post: aumenta la cantidad de minas permitidas por jugador.
+	 */
 	void setCantidadDeMinasPermitidas(unsigned int cantidad);
 
+	/*pre:
+	 * post: devuelve la cantidad de minas colocadas
+	 */
 	unsigned int getCantidadDeMinasPuestas();
 
+	/*pre:
+	 * post: asigna la canitdad de minas puestas.
+	 */
 	void setCantidadDeMinasPuestas(unsigned int cantidad);
 
+	/*pre:
+	 * post: devuelve true o false dependiendo si encontro o no una mina.
+	 */
 	bool getMinaEncontrada();
 
+	/*pre:
+	 * post: asigna true o false dependiendo si encontro o no una mina.
+	 */
 	void setMinaEncontrada(bool minaEncontrada);
 
+	/*pre:
+	 * post:
+	 */
 	void crearTableroJugador(int profundidad, int filas, int columnas);
 
+	/*pre:
+	 * post:
+	 */
 	void pintarTesoro(int z, int x, int y);
 
+	/*pre:
+	 * post:
+	 */
 	void pintarEspia(int z, int x, int y);
 
+	/*pre:
+	 * post:
+	 */
 	void pintarMina(int z, int x, int y);
 
+	/*pre:
+	 * post: devuelve el estado del jugador.
+	 */
 	bool getEstadoJugador();
 
+	/*pre:
+	 * post: cambia el estado del jugador a elimnado
+	 */
 	void jugadorEliminado();
 };
 
