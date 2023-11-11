@@ -9,12 +9,10 @@
 
 
 
-void validarCantidadDeJugadores(unsigned int numeroJugadores){
-
+void validarCantidadDeJugadores(unsigned int numeroJugadores) {
 	if (numeroJugadores < 0){
 		throw "numero invalido";
 	}
-
 }
 
 
@@ -50,7 +48,7 @@ void TesoroBinario::validarCoordenada(unsigned int &z, unsigned int &x, unsigned
 
 
 
-void colocarFicha(Casillero* casillero, Jugador* jugador, unsigned int numero)){
+void colocarFicha(Casillero* casillero, Jugador* jugador, unsigned int numero) {
 
 	if (numero == 1){
 		casillero->setEstado(LLENO);
@@ -87,9 +85,9 @@ void eliminarTesoro(Jugador * jugador, Casillero *casillero, Lista<Jugador *> *j
 TesoroBinario::TesoroBinario(unsigned int numeroJugadores) {
 	this->numeroJugadores = numeroJugadores;
 	this->numeroJugadoresVivos = numeroJugadores;
-	this->profundidadTablero = numeroJugadores/2;
-	this->anchoTablero = numeroJugadores*10;
-	this->altoTablero = numeroJugadores*10;
+	this->profundidadTablero = numeroJugadores/CAPA;
+	this->anchoTablero = numeroJugadores*ANCHO;
+	this->altoTablero = numeroJugadores*ALTO;
 	this->jugadores = new Lista<Jugador *>();
 	for(unsigned int i = 1; i <= numeroJugadores; i++) {
 		this->jugadores->agregarElemento(new Jugador(i));
@@ -125,7 +123,6 @@ void TesoroBinario::configurarCantidadDeTesoros(unsigned int cantidadDeTesoros) 
 }
 
 Jugador* TesoroBinario::getJugador(unsigned int posicion) {
-	validarCantidadDeJugadores(posicion);
 	return this->jugadores->obtenerElemento(posicion);
 }
 
@@ -200,13 +197,21 @@ void TesoroBinario::activarCasillero(Jugador* jugador) {
 }
 
 void TesoroBinario::moverTesoro(Jugador * jugador){
-	std::cout << "ingrese la posicion del tesoro que quiere mover " << std::endl;
-	Casillero * casilleroViejo = this->ingresoDeCoordenadas();
-	this->validarPosicionTesoro(casilleroViejo);
-	casilleroViejo->quitarFicha();
+	char afirmacion;
+	std::cout << "Ingrese 's' si desea mover un tesoro o cualquier otro caracter si no:";
+	std::cin >> afirmacion;
+	if(afirmacion != 's') {
+		return;
+	}
+	else {
+		std::cout << "ingrese la posicion del tesoro que quiere mover " << std::endl;
+		Casillero * casilleroViejo = this->ingresoDeCoordenadas();
+		this->validarPosicionTesoro(casilleroViejo);
+		casilleroViejo->quitarFicha();
 
-	Casillero * casilleroNuevo = casilleroViejo;
-	this->colocarNuevaPosicion(jugador, casilleroNuevo);
+		Casillero * casilleroNuevo = casilleroViejo;
+		this->colocarNuevaPosicion(jugador, casilleroNuevo);
+	}
 }
 
 void TesoroBinario::validarPosicionTesoro(Casillero * casilleroViejo){
@@ -265,7 +270,7 @@ void TesoroBinario::colocarTesoroNuevo(Jugador * jugador, Casillero * casilleroN
 	if(casilleroNuevo->estaVacio()) {
 		colocarFicha(casilleroNuevo, jugador, 1);
 		jugador->pintarTesoro(casilleroNuevo->getZ(), casilleroNuevo->getX(), casilleroNuevo->getY());
-		Jugador* jugadorDelTesoro = this->getJugador(casilleroNuevo->getPropietario());
+		//Jugador* jugadorDelTesoro = this->getJugador(casilleroNuevo->getPropietario());
 		std::cout << "se movio el tesoro de forma correcta" << std::endl;
 	}
 	else {
@@ -449,7 +454,7 @@ void TesoroBinario::jugarCarta(Jugador *jugador) {
 			do{
 				std::cout << "Ingrese la carta que desea jugar: ";
 				std::cin  >> numeroCarta;
-			} while(numeroCarta != 1 && numeroCarta != 2 && numeroCarta != 3)
+			} while(numeroCarta != 1 && numeroCarta != 2 && numeroCarta != 3);
 
 				switch(jugador->getManoCarta()->obtenerElemento(numeroCarta)->getTipoDeCarta()) {
 				case BLINDAJE:

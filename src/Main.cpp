@@ -10,8 +10,8 @@
 
 int main() {
 
-	unsigned int cantidadJugadores = 0;
-	cantidadJugadores = ingresoCantidadDeJugadores(unsigned int cantidadDejugadores);
+	std::cout << "---BIENVENIDO AL JUEGO TESORO BINARIO---" << std::endl;
+	unsigned int cantidadJugadores = ingresoCantidadDeJugadores();
 	TesoroBinario * nuevoJuego = new TesoroBinario(cantidadJugadores);
 	jugarJuego(nuevoJuego, cantidadJugadores);
 

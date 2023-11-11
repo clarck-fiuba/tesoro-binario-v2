@@ -14,6 +14,7 @@
 #include "Casillero.h"
 #include "Ficha.h"
 #include "BMPTablero.h"
+#include "Constantes.h"
 
 class Jugador {
 private:

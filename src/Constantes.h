@@ -14,14 +14,15 @@ const int ALTO = 10;
 const int CAPA = 2;
 const int TURNO_DE_RECUPERAR_TESORO = 4;
 const int CANTIDAD_DE_CARTAS = 5;
-const int CANTIDAD_DE_CARTAS_PERMITIDAS = 5;
+const int CANTIDAD_DE_CARTAS_PERMITIDAS = 3;
+const int MULTIPLICADOR_DEL_TESORO = 2;
 
-const char ARRIBA;
-const char ABAJO;
-const char DERECHA;
-const char IZQUIERDA;
-const char MENOS_PROFUNIDAD;
-const char MAS_PROFUNDIDAD;
+const char ARRIBA = 'w';
+const char ABAJO = 's';
+const char DERECHA = 'd';
+const char IZQUIERDA = 'a';
+const char MENOS_PROFUNIDAD = 'q';
+const char MAS_PROFUNDIDAD = 'e';
 
 
 #endif /* SRC_CONSTANTES_H_ */
