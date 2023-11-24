@@ -10,17 +10,17 @@
 #include <iostream>
 #include "Ficha.h"
 
-enum EstadoCasilla {
-	VACIA,
-	INACTIVA,
-	BLINDADA,
+enum EstadoCasillero {
+	VACIO,
+	INACTIVO,
+	BLINDADO,
 	LLENO
 };
 
 class Casillero {
 private:
-	EstadoCasilla estado;
-	unsigned int propietario;
+	EstadoCasillero estadoCasillero;
+	unsigned int numeroDePropietario;
 	Ficha *ficha;
 	Casillero**** vecinos;
 	int rangoDeVecinos;
@@ -37,27 +37,29 @@ private:
 
 	/*
 	 * pre: -
-	 * post: Valida que el nuevoPropietario sea el correcto.
+	 * post: Valida que el número de propietario sea mayor o igual a 0.
 	 */
-	void validarPropietario(unsigned int nuevoPropietario);
+	void validarNumeroDePropietario(unsigned int numeroDePropietario);
 
 	/*
 	 * pre: -
-	 * post: Verifica que la colocacion de una ficha se haga de manera correcta.
+	 * post: Verifica que la ficha sea NULL, el estado del casillero este en VACIO,
+	 * 		 que la nueva ficha sea distinto de NULL y que el numero de propietario sea mayor a 0.
 	 */
-	void verificarColocacionDeFicha(Ficha* nuevaFicha);
+	void verificarColocacionDeFicha(Ficha* nuevaFicha, unsigned int numeroDePropietario);
 
 	/*
 	 * pre: -
-	 * post: Verifica que primero se haya colocado una ficha, que ficha sea distinto de NULL.
+	 * post: Verifica que primero haya una ficha colocada, (ficha sea distinto de NULL),
+	 * 		 que el tipo de ficha sea el correcto y que el numero de propietario sea mayor 0.
 	 */
-	void verificarFicha();
+	void verificarCambioDeFicha(TipoDeFicha tipoDeFicha, unsigned int numeroDePropietario);
 
 	/*
 	 * pre: -
 	 * post: Verifica que nuevoEstado sea correcto.
 	 */
-	void validarNuevoEstado(EstadoCasilla nuevoEstado);
+	void validarNuevoEstado(EstadoCasillero nuevoEstado);
 
 	/*
 	 * pre: -
@@ -123,15 +125,15 @@ public:
 
 	/*
 	 * pre: -
-	 * post: Devuelve el propietario del casillero.
+	 * post: Devuelve el numero de propietario del casillero.
 	 */
-	unsigned int getPropietario();
+	unsigned int getNumeroDePropietario();
 
 	/*
-	 * pre: El nuevoPropietario debe ser mayor o igual a 1.
-	 * post: Cambia el propietario del casillero por el pasado por parámetro.
+	 * pre: El numero de propietario debe ser mayor o igual a 0.
+	 * post: Cambia el numero de propietario del casillero por el pasado por parámetro.
 	 */
-	void setPropietario(unsigned int nuevoPropietario);
+	void setNumeroDePropietario(unsigned int numeroDePropietario);
 
 	/*
 	 * pre: La ficha debe ser distinta de NULL.
@@ -140,35 +142,50 @@ public:
 	TipoDeFicha getTipoFicha();
 
 	/*
-	 * pre: La ficha debe estar NULL y la nuevaFicha debe ser distinto de NULL.
-	 * post: Coloca una nueva ficha en el tablero.
+	 * pre: -
+	 * post: Retorna verdadero si la ficha es distinto de NULL.
 	 */
-	void colocarFicha(Ficha *nuevaFicha);
+	//bool fichaInicializada();
+
+	/*
+	 * pre: La ficha debe estar NULL, la nuevaFicha debe ser distinto de NULL,
+	 * 		el casillero debe estar en estado VACIO y el numero de propietario debe ser mayor a 0.
+	 * post: Hace que la ficha sea igual a la nueva ficha pasada por parámetro,
+	 * 		 cambia el estado del casillero a LLENO y
+	 * 		 actualiza el numero de propietario al pasado por parámetro.
+	 */
+	void colocarFicha(Ficha *nuevaFicha, unsigned int numeroDePropietario);
 
 	/*
 	 * pre: Se debe de haber colocado una ficha (llamado al metodo colocarFicha()),
-	 * 		que ficha sea distinto de NULL.
-	 * post: Cambia el tipo de ficha de la ficha por el pasado por parámetro.
+	 * 		que el tipo de ficha sea el correcto y el numero de propietario debe ser mayor a 0.
+	 * post: Cambia el tipo de ficha de la ficha por el pasado por parámetro y
+	 * 		 actualiza el numero de propietario al pasado por parámetro.
 	 */
-	void cambiarFicha(TipoDeFicha nuevoTipo);
+	void cambiarFicha(TipoDeFicha tipoDeFicha, unsigned int numeroDePropietario);
 
+	/*
+	 * pre: -
+	 * post: Cambia la ficha a NULL, el estado del casillero a VACIO y
+	 * 		 el numero de propietario a 0.
+	 */
 	void quitarFicha();
 
 	/*
 	 * pre: -
 	 * post: Devuelve el estado del casillero.
 	 */
-	EstadoCasilla getEstado();
+	EstadoCasillero getEstado();
 
 	/*
 	 * pre: El nuevo estado debe existir.
 	 * post: Cambia el estado del casillero por el nuevo estado pasado por parámetro.
 	 */
-	void setEstado(EstadoCasilla nuevoEstado);
+	void setEstado(EstadoCasillero nuevoEstado);
 
 	/*
 	 * pre: -
-	 * post: Retorna verdadero si el estado de la casilla es VACIA.
+	 * post: Retorna verdadero si el estado del casillero es VACIO.
 	 */
 	bool estaVacio();
 

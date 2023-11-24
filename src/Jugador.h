@@ -9,39 +9,30 @@
 #define JUGADOR_H_
 #include <iostream>
 #include <random>
+#include "EasyBMP.h"
+#include "Constantes.h"
 #include "Lista.h"
 #include "Carta.h"
 #include "Casillero.h"
 #include "Ficha.h"
-#include "BMPTablero.h"
 
 class Jugador {
 private:
-	bool jugadorVivo;
-	unsigned int numeroJugador;
-	unsigned int cantidadDeTesoros;
-	unsigned int cantidadDeMinasPuestas;
+	unsigned int numeroDeJugador;
+	unsigned int cantidadDeTesorosEnTablero;
 	unsigned int cantidadDeMinasPermitidas;
-	unsigned int numeroTurno;
-	int numeroRandom;
-	bool minaEncontrada;
+	unsigned int cantidadDeMinasEnTablero;
+	bool pisadoMinaDeOtroJugador;
+	bool jugadoCarta;
 	Lista<Carta *> *manoDeCartas;
-	Lista<Casillero* > *casillerosDeTesoroEncontrado;
-	Lista<unsigned int> *turnoRecuperarTesoro;
-	unsigned int casillerosDesactivados;
-	unsigned int casillerosActivados;
-	BMPTablero *tableroJugador;
-	BMP *tablero;
-	BMP *tesoro;
-	BMP *espia;
-	BMP *mina;
+	BMP* tableroBMP;
 	std::string nombreTablero;
 
 	/*
 	 * pre: -
 	 * post: Valida que el numero de jugador sea mayor a 0.
 	 */
-	void validarNumeroJugador(unsigned int numeroJugador);
+	void validarNumeroDeJugador(unsigned int numeroJugador);
 
 	/*
 	 * pre: -
@@ -51,15 +42,22 @@ private:
 
 	/*
 	 * pre: -
-	 * post: Valida que el numero de turno sea mayor o igual a 1.
+	 * post: Valida que la cantidad de minas permitidas sea mayor o igual a 0.
 	 */
-	void validarNumeroTurno(unsigned int numeroTurno);
+	void validarCantidadDeMinasPermitidas(unsigned int cantidadDeMinas);
+
+	/*
+	 * pre: -
+	 * post: Valida que la cantidad de minas en el tablero sea mayor o igual a 0 y
+	 * 		 menor o igual a la cantidad de minas permitidas.
+	 */
+	void validarCantidadDeMinasEnTablero(unsigned int cantidadDeMinas);
 
 public:
 	/*
-	 * pre: El numeroJugador debe ser mayor a 0.
-	 * post: Crea un Jugador con su numero de jugador, la cantidad de tesoros y el
-	 * 		 numero de turno en 0 y una mano de 3 cartas aleatorias.
+	 * pre: El numeroDeJugador debe ser mayor a 0.
+	 * post: Crea un Jugador con su numero de jugador, la cantidad de tesoros en el tablero en 0 y
+	 * 		 una mano de 3 cartas aleatorias.
 	 */
 	Jugador(unsigned int numeroJugador);
 
@@ -77,81 +75,94 @@ public:
 
 	/*
 	 * pre: -
-	 * post: Devuelve la cantidad de tesoros de cada jugador que tiene en el tablero.
+	 * post: Devuelve la cantidad de tesoros que el jugador tiene en el tablero.
 	 */
-	unsigned int getCantidadDeTesoros();
+	unsigned int getCantidadDeTesorosEnTablero();
 
 	/*
 	 * pre: -
-	 * post: Devuelve el numero de turno de cada jugador.
+	 * post: Devuelve la cantidad de minas permitidas por jugador.
 	 */
-	unsigned int getNumeroTurno();
+	unsigned int getCantidadDeMinasPermitidas();
 
 	/*
 	 * pre: -
-	 * post: Devuelve la lista mano de cartas de cada jugador.
+	 * post: Devuelve la cantidad de minas que el jugador tiene en el tablero.
 	 */
-	Lista<Carta *> *getManoCarta();
+	unsigned int getCantidadDeMinasEnTablero();
+
+	/*
+	 * pre: -
+	 * post: Devuelve verdadero o falso según valga la variable "pisadoMinaDeOtroJugador".
+	 */
+	bool getEstadoPisadoMinaDeOtroJugador();
+
+	/*
+	 * pre:
+	 * post: Devuelve verdadero o false según valga la variable "jugadoCarta".
+	 */
+	bool getEstadoJugadoCarta();
+
+	/*
+	 * pre: -
+	 * post: Devuelve la lista mano de cartas del jugador.
+	 */
+	Lista<Carta *> *getManoDeCartas();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	BMP* getTableroBMP();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	std::string getNombreTablero();
 
 	/*
 	 * pre: La cantidad de tesoros debe ser mayor o igual a 0.
-	 * post: Cambia la cantidad de tesoros de cada jugador.
+	 * post: Actualiza la cantidad de tesoros en el tablero.
 	 */
-	void setCantidadDeTesoros(unsigned int cantidadDeTesoros);
+	void setCantidadDeTesorosEnTablero(unsigned int cantidadDeTesoros);
 
 	/*
-	 * pre: El turno debe ser mayor o igual a 1.
-	 * post: Cambia el numero de turno por el pasado por parámetro.
+	 * pre: La cantidad de minas permitidas debe ser mayor o igual a 0.
+	 * post: Actualiza la cantidad de minas permitidas por cada jugador.
 	 */
-	void setNumeroDeTurno(unsigned int turno);
+	void setCantidadDeMinasPermitidas(unsigned int cantidadDeMinas);
+
+	/*
+	 * pre: La cantidad de minas debe ser mayor o igual a 0 y
+	 * 		menor o igual a la cantidad de minas permitidas.
+	 * post: Actualiza la cantidad de minas en el tablero.
+	 */
+	void setCantidadDeMinasEnTablero(unsigned int cantidadDeMinas);
+
+	/*
+	 * pre: -
+	 * post: Cambia el estado de la variable "pisadoMinaDeOtroJugador" por el pasado por parámetro.
+	 */
+	void aPisadoMina(bool pisarMina);
+
+	/*
+	 * pre: -
+	 * post: Cambia el estado de la variable "jugadoCarta" por el pasado por parámetro.
+	 */
+	void aJugadoCarta(bool jugarCarta);
+
+	/*
+	 * pre: -
+	 * post: Llena la lista mano de cartas con 3 nuevas cartas aleatorias.
+	 */
+	void crearManoDeCartas();
 
 	/*
 	 * pre: La posicion debe estar entre 1 y el numero de cartas de mi mano.
 	 * post: Elimina la carta en la posicion pasada por parámetro.
 	 */
 	void eliminarCartaDeLaMano(unsigned int posicion);
-
-	unsigned int getCasillerosDesactivados();
-
-	void setCasillerosDesactivados(unsigned int casillerosDesactivados);
-
-	unsigned int getCasillerosActivados();
-
-	void setCasilleroActivados(unsigned int casillerosActivados);
-
-	unsigned int getTurnoRecuperarTesoro(int posicion);
-
-	void setTurnoRecuperarTesoro(unsigned int turno);
-
-	Lista<Casillero* > *getListaCasillerosDesactivados();
-
-	Casillero* getCasillerosConTesorosEncontrados(int posicion);
-
-	void setCasillerosConTesorosEncontrados(Casillero* casillero);
-
-	unsigned int getCantidadDeMinasPermitidas();
-
-	void setCantidadDeMinasPermitidas(unsigned int cantidad);
-
-	unsigned int getCantidadDeMinasPuestas();
-
-	void setCantidadDeMinasPuestas(unsigned int cantidad);
-
-	bool getMinaEncontrada();
-
-	void setMinaEncontrada(bool minaEncontrada);
-
-	void crearTableroJugador(int profundidad, int filas, int columnas);
-
-	void pintarTesoro(int z, int x, int y);
-
-	void pintarEspia(int z, int x, int y);
-
-	void pintarMina(int z, int x, int y);
-
-	bool getEstadoJugador();
-
-	void jugadorEliminado();
 };
 
 #endif /* JUGADOR_H_ */

@@ -11,7 +11,7 @@
 #include "Casillero.h"
 
 enum TipoDeCarta {
-	BLINDAJE,
+	BLINDAR,
 	RADAR,
 	PARTIR_TESORO,
 	AGREGAR_MINA,

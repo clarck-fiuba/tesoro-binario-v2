@@ -13,29 +13,41 @@ void Casillero::validarXYyZ(unsigned int x, unsigned int y, unsigned z) {
 	}
 }
 
-void Casillero::validarPropietario(unsigned int nuevoPropietario) {
-	if(nuevoPropietario < 1) {
-		throw std::runtime_error("El nuevo propietario debe ser mayor o igual a 1");
+void Casillero::validarNumeroDePropietario(unsigned int numeroDePropietario) {
+	if(numeroDePropietario < 0) {
+		throw std::runtime_error("El nuevo propietario debe ser mayor o igual a 0");
 	}
 }
 
-void Casillero::verificarColocacionDeFicha(Ficha* nuevaFicha) {
+void Casillero::verificarColocacionDeFicha(Ficha* nuevaFicha, unsigned int numeroDePropietario) {
+	if(this->estadoCasillero != VACIO || this->numeroDePropietario != 0) {
+		throw std::runtime_error("El casillero debe estar vacío");
+	}
 	if(this->ficha != NULL) {
 		throw std::runtime_error("La ficha debe estar en NULL");
 	}
 	if(nuevaFicha == NULL) {
 		throw std::runtime_error("La nueva ficha no puede estar en NULL");
 	}
-}
-
-void Casillero::verificarFicha() {
-	if(this->ficha == NULL) {
-		throw std::runtime_error("No se ha colocado ninguna ficha, la ficha apunta a NULL");
+	if(numeroDePropietario < 1) {
+		throw std::runtime_error("El numero de propietario debe ser mayor a 0");
 	}
 }
 
-void Casillero::validarNuevoEstado(EstadoCasilla nuevoEstado) {
-	if(nuevoEstado != VACIA && nuevoEstado != INACTIVA && nuevoEstado != BLINDADA && nuevoEstado != LLENO) {
+void Casillero::verificarCambioDeFicha(TipoDeFicha tipoDeFicha, unsigned int numeroDePropietario) {
+	if(tipoDeFicha != TESORO && tipoDeFicha != ESPIA && tipoDeFicha != MINA) {
+		throw std::runtime_error("Tipo de ficha no existente");
+	}
+	if(this->ficha == NULL) {
+		throw std::runtime_error("No se ha colocado ninguna ficha, la ficha apunta a NULL");
+	}
+	if(numeroDePropietario < 1) {
+		throw std::runtime_error("El numero de propietario debe ser mayor a 0");
+	}
+}
+
+void Casillero::validarNuevoEstado(EstadoCasillero nuevoEstado) {
+	if(nuevoEstado != VACIO && nuevoEstado != INACTIVO && nuevoEstado != BLINDADO && nuevoEstado != LLENO) {
 		throw std::runtime_error("El nuevo estado no existe");
 	}
 }
@@ -62,8 +74,8 @@ void Casillero::validarCoordenadasVecinos(unsigned int z, unsigned int x, unsign
 
 Casillero::Casillero(unsigned int z, unsigned int x, unsigned int y) {
 	this->validarXYyZ(x, y, z);
-	this->estado = VACIA;
-	this->propietario = 0;
+	this->estadoCasillero = VACIO;
+	this->numeroDePropietario = 0;
 	this->ficha = NULL;
 	this->rangoDeVecinos = 0;
 	this->dimensionCuboVecinos = 0;
@@ -116,47 +128,57 @@ void Casillero::eliminarCuboVecinos() {
 	delete[] this->vecinos;
 }
 
-unsigned int Casillero::getPropietario() {
-	return this->propietario;
+unsigned int Casillero::getNumeroDePropietario() {
+	return this->numeroDePropietario;
 }
 
-void Casillero::setPropietario(unsigned int nuevoPropietario) {
-	this->validarPropietario(nuevoPropietario);
-	this->propietario = nuevoPropietario;
+void Casillero::setNumeroDePropietario(unsigned int numeroDePropietario) {
+	this->validarNumeroDePropietario(numeroDePropietario);
+	this->numeroDePropietario = numeroDePropietario;
 }
 
 TipoDeFicha Casillero::getTipoFicha() {
-	this->verificarFicha();
+	if(this->estaVacio()) {
+		throw std::runtime_error("El casillero no tiene ningun tipo de ficha");
+	}
 	return this->ficha->getTipoFicha();
 }
-
-void Casillero::colocarFicha(Ficha *nuevaFicha) {
-	this->verificarColocacionDeFicha(nuevaFicha);
+/*
+bool Casillero::fichaInicializada() {
+	return this->ficha != NULL;
+}
+*/
+void Casillero::colocarFicha(Ficha *nuevaFicha, unsigned int numeroDePropietario) {
+	this->verificarColocacionDeFicha(nuevaFicha, numeroDePropietario);
 	this->ficha = nuevaFicha;
+	this->setEstado(LLENO);
+	this->setNumeroDePropietario(numeroDePropietario);
+}
+
+void Casillero::cambiarFicha(TipoDeFicha tipoDeFicha, unsigned int numeroDePropietario) {
+	this->verificarCambioDeFicha(tipoDeFicha, numeroDePropietario);
+	this->ficha->setTipoFicha(tipoDeFicha);
+	this->setNumeroDePropietario(numeroDePropietario);
 }
 
 void Casillero::quitarFicha() {
+	delete this->ficha;
 	this->ficha = NULL;
-	this->setEstado(VACIA);
-	this->setPropietario(0);
+	this->setEstado(VACIO);
+	this->setNumeroDePropietario(0);
 }
 
-void Casillero::cambiarFicha(TipoDeFicha nuevoTipo) {
-	this->verificarFicha();
-	this->ficha->setTipoFicha(nuevoTipo);
+EstadoCasillero Casillero::getEstado() {
+	return this->estadoCasillero;
 }
 
-EstadoCasilla Casillero::getEstado() {
-	return this->estado;
-}
-
-void Casillero::setEstado(EstadoCasilla nuevoEstado) {
+void Casillero::setEstado(EstadoCasillero nuevoEstado) {
 	this->validarNuevoEstado(nuevoEstado);
-	this->estado = nuevoEstado;
+	this->estadoCasillero = nuevoEstado;
 }
 
 bool Casillero::estaVacio() {
-	return this->estado == VACIA;
+	return (this->estadoCasillero == VACIO && this->ficha == NULL && this->getNumeroDePropietario() == 0);
 }
 
 int Casillero::getRangoVecinos() {

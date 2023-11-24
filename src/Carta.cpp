@@ -8,7 +8,7 @@
 #include "Carta.h"
 
 void Carta::validarTipoDeCarta(TipoDeCarta tipoDeCarta) {
-	if(tipoDeCarta != BLINDAJE && tipoDeCarta != RADAR && tipoDeCarta != PARTIR_TESORO &&
+	if(tipoDeCarta != BLINDAR && tipoDeCarta != RADAR && tipoDeCarta != PARTIR_TESORO &&
 	   tipoDeCarta != AGREGAR_MINA && tipoDeCarta != ROMPER_BLINDAJE && tipoDeCarta != ELIMINAR_CARTA) {
 		throw std::runtime_error("Tipo de carta no existente");
 	}
