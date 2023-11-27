@@ -31,98 +31,93 @@ private:
 public:
 	/*
 	 * pre:
-	 * post:
+	 * post: crea el tableroBMP inicializando de forma correcta sus atrubitos.
 	 */
 	TableroBMP(int cantidadDeCapas, int cantidadDeFilas, int cantidadDeColumnas);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: elimina el forma correcta el tableroBMP.
 	 */
 	virtual ~TableroBMP();
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta en blaco el pixel de coordenadas x, y del BMP a pintar.
 	 */
 	void pintarBlanco(BMP* bmpAPintar, int x, int y);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta en negro el pixel de coordenadas x, y del BMP a pintar.
 	 */
 	void pintarNegro(BMP* bmpAPintar, int x, int y);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta el fondo de la capaBMP.
 	 */
 	void pintarFondoDeLaCapa();
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta los casilleros de la capaBMP.
 	 */
 	void pintarCasilleros();
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta el marco de la capaBMP.
 	 */
 	void pintarMarcoDeLaCapa();
 
-	/*
-	 * pre:
-	 * post:
-	 */
-	bool archivoCapaYaExistente(const std::string& nombreArchivo);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: crea el capaBMP y lo escribe en un archivo.
 	 */
 	void crearCapa();
 
 	/*
 	 * pre:
-	 * post:
+	 * post: crea el tableroBMP y lo escribe en un archivo.
 	 */
 	void crearTablero(BMP& tablero, std::string nombreTablero);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: hace el calculo para los pixeles correctos para pintar las fichas.
 	 */
 	void calculoParaPintarFichas(unsigned int z, unsigned int x, unsigned int y, int& inicioY, int& inicioX);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta el fichaBMP en el tableroBMP.
 	 */
 	void pintarFicha(unsigned int z, unsigned int x, unsigned int y,
 			BMP& tablero, BMP& ficha, std::string nombreTablero);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta el tesoroBMP en el tableroBMP.
 	 */
 	void pintarTesoro(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
 	 * pre:
-	 * post:
+	 * post:pinta el espiaBMP en el tableroBMP.
 	 */
 	void pintarEspia(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta el minaBMP en el tableroBMP.
 	 */
 	void pintarMina(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
 	 * pre:
-	 * post:
+	 * post: pinta un casillero vacio en el tableroBMP.
 	 */
 	void pintarCasilleroVacio(unsigned int z, unsigned int x, unsigned int y,
 			BMP& tablero, std::string nombreTablero);

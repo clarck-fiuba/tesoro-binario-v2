@@ -212,6 +212,7 @@ void FuncionalidadCartas::romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& j
 }
 
 void FuncionalidadCartas::eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores) {
+	this->validarJugador(jugador);
 	Jugador* jugadorAEliminarCarta = this->jugadorAEliminarCarta(jugador, jugadores);
 	std::random_device rd;
 	std::mt19937 mt(rd());

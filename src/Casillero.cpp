@@ -143,11 +143,7 @@ TipoDeFicha Casillero::getTipoFicha() {
 	}
 	return this->ficha->getTipoFicha();
 }
-/*
-bool Casillero::fichaInicializada() {
-	return this->ficha != NULL;
-}
-*/
+
 void Casillero::colocarFicha(Ficha *nuevaFicha, unsigned int numeroDePropietario) {
 	this->verificarColocacionDeFicha(nuevaFicha, numeroDePropietario);
 	this->ficha = nuevaFicha;
