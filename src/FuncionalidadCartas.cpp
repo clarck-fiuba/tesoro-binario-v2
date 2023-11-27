@@ -1,18 +1,48 @@
 /*
  * FuncionalidadCartas.cpp
  *
- *  Created on: 26/10/2023
- *      Author: algo2
+ *  Created on: 13 nov. 2023
+ *      Author: gonzalo
  */
+
 #include "FuncionalidadCartas.h"
 
-void FuncionalidadCartas::validarTablero(Tablero* tablero) {
+void FuncionalidadCartas::validarTablero(Tablero*& tablero) {
 	if(tablero == NULL) {
-		throw std::runtime_error("El tablero ya debe estar inicializado");
+		throw std::runtime_error("El tablero debe estar inicializado.");
 	}
 }
 
-Casillero* FuncionalidadCartas::ingresoDeCoordenadas() {
+void FuncionalidadCartas::validarJugador(Jugador*& jugador) {
+	if(jugador == NULL) {
+		throw std::runtime_error("El jugador no puede ser nulo");
+	}
+}
+
+bool FuncionalidadCartas::tesoroPropio(Casillero*& casillero, Jugador*& jugador) {
+	return (casillero->getTipoFicha() == TESORO &&
+			casillero->getNumeroDePropietario() == jugador->getNumeroJugador());
+}
+
+bool FuncionalidadCartas::tesoroDeOtroJugador(Casillero*& casillero, Jugador*& jugador) {
+	return (casillero->getTipoFicha() == TESORO &&
+			casillero->getNumeroDePropietario() != jugador->getNumeroJugador());
+}
+
+bool FuncionalidadCartas::casilleroVacio(Casillero*& casillero) {
+	return casillero->estaVacio();
+}
+
+FuncionalidadCartas::FuncionalidadCartas(Tablero*& tableroDelJuego) {
+	this->validarTablero(tableroDelJuego);
+	this->tableroDelJuego = tableroDelJuego;
+}
+
+FuncionalidadCartas::~FuncionalidadCartas() {
+
+}
+
+Casillero* FuncionalidadCartas::ingresoCoordenadaDeCasillero() {
 	unsigned int z, x, y;
 	std::cout << "Z: ";
 	std::cin >> z;
@@ -20,148 +50,175 @@ Casillero* FuncionalidadCartas::ingresoDeCoordenadas() {
 	std::cin >> x;
 	std::cout << "Y: ";
 	std::cin >> y;
-	return this->tablero->getCasillero(z, x, y);
+	return this->tableroDelJuego->getCasillero(z, x, y);
 }
 
-bool FuncionalidadCartas::validarCasilleroTesoro(Casillero* casillero) {
-	return casillero->getTipoFicha() == TESORO;
-}
-
-bool FuncionalidadCartas::validarCasilleroPropietario(Casillero* casillero, Jugador* jugador) {
-	return casillero->getPropietario() == jugador->getNumeroJugador();
-}
-
-void FuncionalidadCartas::validarJugador(Jugador* jugador) {
-	if(jugador == NULL) {
-		throw std::runtime_error("El jugador ya debe estar inicializado");
+void FuncionalidadCartas::eliminarTesoro(Casillero*& casillero, Lista<Jugador* >*& jugadores) {
+	unsigned int numeroDePropietario = casillero->getNumeroDePropietario();
+	unsigned int i = 1;
+	while(jugadores->obtenerElemento(i)->getNumeroJugador() != numeroDePropietario) {
+		i++;
 	}
+	Jugador* jugadorAEliminarTesoro = jugadores->obtenerElemento(i);
+	unsigned int cantidadDeTesoros = jugadorAEliminarTesoro->getCantidadDeTesorosEnTablero()-1;
+	jugadorAEliminarTesoro->setCantidadDeTesorosEnTablero(cantidadDeTesoros);
+	std::cout << "Jugador " << jugadorAEliminarTesoro->getNumeroJugador()
+					<< " cantidad de tesoros: " << cantidadDeTesoros << std::endl;
 }
 
-FuncionalidadCartas::FuncionalidadCartas(Tablero* tablero) {
-	this->validarTablero(tablero);
-	this->tablero = tablero;
+unsigned int FuncionalidadCartas::posicionCartaRomperBlindaje(Jugador*& jugador) {
+	unsigned int posicionCarta = 1;
+	jugador->getManoDeCartas()->iniciarCursor();
+	while(jugador->getManoDeCartas()->avanzarCursor()) {
+		Carta* cartaActual = jugador->getManoDeCartas()->obtenerCursor();
+		if(cartaActual->getTipoDeCarta() != ROMPER_BLINDAJE) {
+			posicionCarta++;
+		}
+	}
+	return posicionCarta;
 }
 
-FuncionalidadCartas::~FuncionalidadCartas() {
-	// TODO Auto-generated destructor stub
+void FuncionalidadCartas::pintarTesoro(TableroBMP*& tableroBMP, Casillero* casillero, Jugador* jugador) {
+	tableroBMP->pintarTesoro(casillero->getZ(), casillero->getX(), casillero->getY(),
+			*(jugador->getTableroBMP()), jugador->getNombreTablero());
 }
 
-void FuncionalidadCartas::blindarCarta(Jugador* jugador){
+Jugador* FuncionalidadCartas::jugadorAEliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores) {
+	unsigned int numeroJugadorAEliminarCarta = 0;
+
+	bool jugadorEncontrado = false;
+
+	Jugador* jugadorAEliminarCarta = NULL;
+	do {
+		std::cout << "Ingrese el número del jugador del cual desea eliminar una de sus cartas: ";
+		std::cin >> numeroJugadorAEliminarCarta;
+		unsigned int indice = 1;
+		while(indice <= jugadores->contarElementos() && jugadorEncontrado == false) {
+			if(jugadores->obtenerElemento(indice)->getNumeroJugador() == numeroJugadorAEliminarCarta &&
+					jugadores->obtenerElemento(indice)->getNumeroJugador() != jugador->getNumeroJugador()) {
+				jugadorAEliminarCarta = jugadores->obtenerElemento(indice);
+				jugadorEncontrado = true;
+			}
+			else {
+				indice++;
+			}
+		}
+
+		if(jugadorEncontrado == false) {
+			std::cout << "El numero del jugador está mal ingresado o no existe." << std::endl;
+		}
+
+	} while(jugadorEncontrado == false);
+	return jugadorAEliminarCarta;
+}
+
+void FuncionalidadCartas::blindar(Jugador*& jugador) {
 	this->validarJugador(jugador);
 	std::cout << "Ingrese la coordenada de su tesoro que desea blindar: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas();
-	if(this->validarCasilleroTesoro(casillero) && this->validarCasilleroPropietario(casillero, jugador)){
-		casillero->setEstado(BLINDADA);
+	Casillero* casilleroConTesoroABlindar = this->ingresoCoordenadaDeCasillero();
+
+	if(!this->tesoroPropio(casilleroConTesoroABlindar, jugador)) {
+		std::cout << "Coordenada mal ingresada." << std::endl;
+		this->blindar(jugador);
 	}
 	else {
-		throw std::runtime_error("Casillero mal ingresado");
-	}
-	if(casillero->getEstado() == BLINDADA) {
-		std::cout << "Casillero blindado" << std::endl;
+		casilleroConTesoroABlindar->setEstado(BLINDADO);
 	}
 }
 
-void FuncionalidadCartas::radar(Jugador* jugador) {
+void FuncionalidadCartas::radar(Jugador*& jugador) {
 	this->validarJugador(jugador);
-	unsigned contadorTesoros = 0;
+	unsigned int cantidadTesorosDetectados = 0;
 	std::cout << "Ingrese la coordenada donde quiere poner su radar: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas();
-	for(int i = -casillero->getRangoVecinos(); i <= casillero->getRangoVecinos(); i++) {
-		for(int j = -casillero->getRangoVecinos(); j <= casillero->getRangoVecinos(); j++) {
-			for(int k = -casillero->getRangoVecinos(); k <= casillero->getRangoVecinos(); k++) {
-				Casillero* vecino = casillero->getVecino(i, j, k);
-				if(casillero->validarVecino(vecino)) {
-					if(!vecino->estaVacio()) {
-						if(this->validarCasilleroTesoro(vecino)) {
-							if(!this->validarCasilleroPropietario(vecino, jugador))
-								contadorTesoros++;
+	Casillero* casilleroAPonerRadar = this->ingresoCoordenadaDeCasillero();
+	int rangoDelRadar = casilleroAPonerRadar->getRangoVecinos();
+	for(int i = -rangoDelRadar; i <= rangoDelRadar; i++) {
+		for(int j = -rangoDelRadar; j <= rangoDelRadar; j++) {
+			for(int k = -rangoDelRadar; k <= rangoDelRadar; k++) {
+				Casillero* vecino = casilleroAPonerRadar->getVecino(i, j, k);
+				if(casilleroAPonerRadar->validarVecino(vecino)) {
+					if(!this->casilleroVacio(vecino)) {
+						if(this->tesoroDeOtroJugador(vecino, jugador)) {
+							cantidadTesorosDetectados++;
 						}
 					}
 				}
 			}
 		}
 	}
-	if(contadorTesoros != 0) {
-		std::cout << "Se han detectado " << contadorTesoros << " tesoros" << std::endl;
+	if(cantidadTesorosDetectados != 0) {
+		std::cout << "Se han detectado " << cantidadTesorosDetectados << " tesoros." << std::endl;
 	}
 	else {
-		std::cout << "El radar no ha detectado ningun tesoro" << std::endl;
+		std::cout << "Su radar no ha detectado ningún tesoro enemigo." << std::endl;
 	}
 }
 
-void FuncionalidadCartas::partirTesoro(Jugador* jugador) {
+void FuncionalidadCartas::partirTesoro(Jugador*& jugador, TableroBMP*& tableroBMP) {
 	this->validarJugador(jugador);
-	bool tesoroPartido = false;
-	std::cout << "Ingrese el tesoro que desea partir: " << std::endl;
-	Casillero* casillero = this->ingresoDeCoordenadas();
-	if(this->validarCasilleroTesoro(casillero) && this->validarCasilleroPropietario(casillero, jugador)) {
-		for(int i = -casillero->getRangoVecinos(); i <= casillero->getRangoVecinos(); i++) {
-			for(int j = -casillero->getRangoVecinos(); j <= casillero->getRangoVecinos(); j++) {
-				for(int k = -casillero->getRangoVecinos(); k <= casillero->getRangoVecinos(); k++) {
-					Casillero* vecino = casillero->getVecino(i, j, k);
-					if(casillero->validarVecino(vecino)) {
-						if(vecino->estaVacio()) {
-							vecino->setEstado(LLENO);
-							vecino->colocarFicha(new Ficha(TESORO));
-							vecino->setPropietario(jugador->getNumeroJugador());
-							jugador->setCantidadDeTesoros(jugador->getCantidadDeTesoros()+1);
-							tesoroPartido = true;
-							return;
-						}
-					}
-				}
-			}
-		}
-		if(!tesoroPartido) {
-			std::cout << "No se pudo partir el tesoro, no hay vecinos libres" << std::endl;
-		}
+	std::cout << "Ingrese la coordenada del tesoro que desea partir:" << std::endl;
+	Casillero* casilleroAPartirTesoro = this->ingresoCoordenadaDeCasillero();
+
+	if(!this->tesoroPropio(casilleroAPartirTesoro, jugador)) {
+		std::cout << "Coordenada mal ingresada." << std::endl;
+		this->partirTesoro(jugador, tableroBMP);
 	}
 	else {
-		std::cout << "Casillero mal ingresado o inactivo" << std::endl;
-		this->partirTesoro(jugador);
+		Casillero* casilleroAPonerTesoro = NULL;
+		int rangoDeBusqueda = casilleroAPartirTesoro->getRangoVecinos();
+		int i = -rangoDeBusqueda; int j = -rangoDeBusqueda; int k = -rangoDeBusqueda;
+		while(i <= rangoDeBusqueda && casilleroAPonerTesoro == NULL) {
+			while(j <= rangoDeBusqueda && casilleroAPonerTesoro == NULL) {
+				while(k <= rangoDeBusqueda && casilleroAPonerTesoro == NULL) {
+					Casillero* vecino = casilleroAPartirTesoro->getVecino(i, j, k);
+					if(casilleroAPartirTesoro->validarVecino(vecino)) {
+						if(this->casilleroVacio(vecino)) {
+							casilleroAPonerTesoro = vecino;
+						}
+					}
+					k++;
+				}
+				k = -rangoDeBusqueda;
+				j++;
+			}
+			j = -rangoDeBusqueda;
+			i++;
+		}
+		if(casilleroAPonerTesoro == NULL) {
+			std::cout << "No se pudo partir su tesoro, no hay casilleros vacíos alrededor." << std::endl;
+		}
+		else {
+			std::cout << "Casillero con nuevo tesoro: "
+					<< casilleroAPonerTesoro->getZ() << " - " << casilleroAPonerTesoro->getX()
+					<< " - " << casilleroAPonerTesoro->getY() << std::endl;
+			casilleroAPonerTesoro->colocarFicha(new Ficha(TESORO), jugador->getNumeroJugador());
+			jugador->setCantidadDeTesorosEnTablero(jugador->getCantidadDeTesorosEnTablero() + 1);
+			this->pintarTesoro(tableroBMP, casilleroAPonerTesoro, jugador);
+		}
 	}
 }
 
-void FuncionalidadCartas::agregarTesoroMina(Jugador* jugador) {
+void FuncionalidadCartas::agregarMina(Jugador*& jugador) {
 	this->validarJugador(jugador);
 	jugador->setCantidadDeMinasPermitidas(jugador->getCantidadDeMinasPermitidas() + 1);
-	std::cout << "Ahora puede colocar " << jugador->getCantidadDeMinasPermitidas() << " tesoros mina" << std::endl;
 }
 
-void FuncionalidadCartas::romperBlindaje(Jugador* jugador, Lista<Jugador* >* jugadores, Casillero* casillero) {
+void FuncionalidadCartas::romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& jugadores, Casillero*& casillero) {
 	this->validarJugador(jugador);
-	//validar lista jugadores
-	//validar casillero
-	std::cout << "Tesoro recuperado" << std::endl;
-	casillero->cambiarFicha(ESPIA);
-	casillero->setEstado(LLENO);
-	unsigned int i = 1;
-	unsigned int dueñoCasillero = casillero->getPropietario();
-	while(jugadores->obtenerElemento(i)->getNumeroJugador() != dueñoCasillero) {
-		i++;
-	}
-	Jugador* jugadorDelTesoro = jugadores->obtenerElemento(i);
-	jugadorDelTesoro->setCantidadDeTesoros(jugadorDelTesoro->getCantidadDeTesoros() - 1);
-	std::cout << "Jugador: " << jugadorDelTesoro->getNumeroJugador()
-			  << " Cantidad de tesoros: "<< jugadorDelTesoro->getCantidadDeTesoros() << std::endl;
-	casillero->setPropietario(jugador->getNumeroJugador());
+	std::cout << "TESORO RECUPERADO." << std::endl;
+	this->eliminarTesoro(casillero, jugadores);
+	casillero->cambiarFicha(ESPIA, jugador->getNumeroJugador());
+	jugador->eliminarCartaDeLaMano(this->posicionCartaRomperBlindaje(jugador));
 }
 
-void FuncionalidadCartas::eliminarCartaEnemiga(Jugador* jugador, Lista<Jugador* >* jugadores) {
-	this->validarJugador(jugador);
-	unsigned int numeroJugadorAEliminarCarta = 0;
-	std::cout << "Ingrese el numero del jugador que desea eliminar una de sus cartas: ";
-	std::cin >> numeroJugadorAEliminarCarta;
-	unsigned int i = 1;
-	while(jugadores->obtenerElemento(i)->getNumeroJugador() != numeroJugadorAEliminarCarta) {
-		i++;
-	}
-	Jugador* jugadorAEliminarCarta = jugadores->obtenerElemento(i);
+void FuncionalidadCartas::eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores) {
+	Jugador* jugadorAEliminarCarta = this->jugadorAEliminarCarta(jugador, jugadores);
 	std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoCarta()->contarElementos());
+	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoDeCartas()->contarElementos());
 	int numeroRandom = dist(mt);
 	jugadorAEliminarCarta->eliminarCartaDeLaMano(numeroRandom);
+	std::cout << "Carta eliminada." << std::endl;
 }
 
 

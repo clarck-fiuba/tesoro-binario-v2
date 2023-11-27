@@ -38,19 +38,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: Tesoro\ binario\ Gonzalo
+all: tesoro-binario-v2
 
 # Tool invocations
-Tesoro\ binario\ Gonzalo: $(OBJS) $(USER_OBJS)
+tesoro-binario-v2: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++  -o "Tesoro binario Gonzalo" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++  -o "tesoro-binario-v2" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) "Tesoro binario Gonzalo"
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CPP_DEPS)$(C_DEPS) tesoro-binario-v2
 	-@echo ' '
 
 .PHONY: all clean dependents

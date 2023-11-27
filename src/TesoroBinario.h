@@ -8,71 +8,108 @@
 #ifndef TESOROBINARIO_H_
 #define TESOROBINARIO_H_
 #include <iostream>
+#include "Constantes.h"
+#include "FuncionalidadCartas.h"
 #include "Jugador.h"
 #include "Carta.h"
 #include "Tablero.h"
-#include "FuncionalidadCartas.h"
 
 class TesoroBinario {
 private:
-	unsigned int numeroJugadores;
-	unsigned int numeroJugadoresVivos;
+	unsigned int cantidadDeJugadores;
+	unsigned int numeroDeTurno;
+	unsigned int cantidadDeTesorosPermitidos;
+	unsigned int cantidadDeMinasPermitidas;
 	Lista<Jugador *> *jugadores;
 	Tablero *tablero;
-	FuncionalidadCartas* funcionalidadCartas;
-	unsigned int cantidadDeTesoros;
-	unsigned int turnos;
-
-	unsigned int profundidadTablero;
-	unsigned int anchoTablero;
-	unsigned int altoTablero;
-
-	char movimiento;
+	Lista<Casillero* > *casillerosInactivos;
+	Lista<unsigned int> *numeroDeTurnoActivarCasillero;
+	TableroBMP* tableroBMP;
+	FuncionalidadCartas *funcionalidadCartas;
 
 	/*
-	 * pre: -
-	 * post: devuelve una excepción si se ingresa numeroJugadores invalido.
+	 * pre:
+	 * post:
 	 */
-	void validarCantidadDeJugadores(unsigned int numeroJugadores);
-
+	void validarCantidadDeJugadores(unsigned int cantidadDeJugadores);
 
 	/*
-	 * pre: -
-	 * post: devuelve una excepción si la posicion es invalido.
+	 * pre:
+	 * post:
 	 */
-	void validarPosicion(unsigned int posicion);
+	bool validarDireccionDeMoviento(char direccionDeMovimiento);
 
 	/*
-	 * pre: -
-	 * post: devuelve una excepción si las coordenadas son invalidas es invalido.
+	 * pre:
+	 * post:
 	 */
-	void validarCoordenada(unsigned int &z, unsigned int &x, unsigned int &y);
+	bool validarMovimiento(char direccionDeMovimiento, Casillero* casilleroConTesoroAMover);
 
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool tesoroPropio(Casillero* casillero, Jugador* jugador);
 
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool tesoroDeOtroJugador(Casillero* casillero, Jugador* jugador);
 
-	void validarPosicionTesoro(Casillero * casilleroViejo);
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool espiaDeOtroJugador(Casillero* casillero, Jugador* jugador);
 
-	void validarMovimiento();
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool minaDeOtroJugador(Casillero* casillero, Jugador* jugador);
 
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool casilleroVacio(Casillero* casillero);
 
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool casilleroInactivo(Casillero* casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool tesoroBlindado(Casillero* casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool limiteAlcanzadoDeMinasEnTablero(Jugador* jugador);
 
 public:
 
 	/*
-	 * pre: numeroJugadores debe ser valido.
-	 * post: inicia el juego, dependiendo la cantidad de jugadore creara el tablero.
+	 * pre:
+	 * post:
 	 */
-	TesoroBinario(unsigned int numeroJugadores);
+	TesoroBinario();
 
 	/*
-	 * pre:-
-	 * post: elimina jugadores, tablero, funcionalidadCartas;
+	 * pre:
+	 * post:
 	 */
 	virtual ~TesoroBinario();
 
 	/*
-	 * pre: -
-	 * post: devuelve todo el tablero.
+	 * pre:
+	 * post:
 	 */
 	Tablero *getTablero();
 
@@ -80,128 +117,205 @@ public:
 	 * pre:
 	 * post:
 	 */
-	void configurarCantidadDeTesoros(unsigned int cantidadDeTesoros);
-
-	/*
-	 * pre: la posicion debe ser valida.
-	 * post: devuelve un jugador.
-	 */
 	Jugador *getJugador(unsigned int posicion);
 
-
-
 	/*
-	 * pre:-
-	 * post:devuelve toda la lista de los jugadores.
+	 * pre:
+	 * post:
 	 */
 	Lista<Jugador* > *getJugadores();
 
 	/*
-	 * pre: las coordenadas deben ser validas.
-	 * post: devuelve el tablero con las coordenadas ingresadas.
+	 * pre:
+	 * post:
 	 */
-	Casillero* ingresoDeCoordenadas();
-
-
-	/*
-	 * pre:-
-	 * post: devuelve la cantidad de turnos.
-	 */
-	unsigned int getTurnos();
+	unsigned int getNumeroDeTurno();
 
 	/*
 	 * pre:
-	 * post: asigna un turno a la variable turnos.
+	 * post:
 	 */
-	void setTurno(unsigned int turno);
-
+	void actualizarNumeroDeTurno(unsigned int numeroDeTurno);
 
 	/*
-	 * pre: no se puede colocar un tesoro encima del propio o del enemigo.
-	 * post: coloca un tesoro.
+	 * pre:
+	 * post:
+	 */
+	unsigned int configurarCantidadDeJugadores();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	unsigned int configurarCantidadDeTesorosPermitidos(unsigned int cantidadDeJugadores);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Lista<Jugador* >* configurarJugadores(unsigned int cantidadDeJugadores);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Tablero* configurarTablero(unsigned int cantidadDeJugadores);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	TableroBMP* configurarTableroBMP(Tablero* tablero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void crearTableroBMPDeLosJugadores();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void mostrarConfiguracionesDelJuego();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void mostrarManoDeCartas(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Casillero* ingresoCoordenadaDeCasillero();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	char ingresoDeDireccionDeMoviento(Casillero *casilleroConTesoroAMover);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Casillero* calculoNuevoCasilleroConTesoro(char direccionDeMovimiento, Casillero* casilleroConTesoroAMover);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool buscarCartaRomperBlindaje(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	Jugador* jugadorDelCasillero(Casillero* casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void eliminarTesoro(Casillero* casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void inactivarCasillero(Casillero* casillero, unsigned int numeroDeTurno);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void activarCasillero();
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void romperBlindaje(Casillero*& casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	bool saltarTurno(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
 	 */
 	void colocarTesoros(Jugador* jugador);
 
-
-	/*
-	 * pre: la posicion del tesoro debe ser valida.
-	 * post: mueve el tesoro a la posicion deseada.
-	 */
-	void moverTesoro(Jugador * jugador);
-
 	/*
 	 * pre:
-	 * post: valdia el movimiento y llama a colocarTesoroNuevo.
-	 */
-	void colocarNuevaPosicion(Jugador * jugador, Casillero * casilleroNuevo);
-
-	/*
-	 * pre: .
-	 * post: devuelve el casillero con las coordenadas donde se colocara el tesoro;
-	 */
-	Casillero * nuevasCoordenas(unsigned int x, unsigned int y, unsigned int z);
-
-	/*
-	 * pre:
-	 * post: valida el movimiento del tesoro.
-	 */
-	void elegirMovimiento();
-
-	/*
-	 * pre: .
-	 * post: coloca el tesoro en la nueva posicion.
-	 */
-	void colocarTesoroNuevo(Jugador * jugador, Casillero * casilleroNuevo);
-
-
-	/*
-	 * pre:
-	 * post: activa la casilla una vez recuperado el tesoro, o explotando un tesoro mina.
-	 */
-	void activarCasillero(Jugador* jugador);
-
-	/*
-	 * pre:
-	 * post: coloca un espia en la casilla del tablero.
+	 * post:
 	 */
 	void colocarEspias(Jugador* jugador);
 
 	/*
 	 * pre:
-	 * post: coloca el tesoro mina en la casilla que esta en el tablero.
+	 * post:
 	 */
-	void colocarTesoroMina(Jugador* jugador);
+	void moverTesoros(Jugador* jugador);
 
 	/*
 	 * pre:
-	 * post: muestra el maso de cartas.
+	 * post:
 	 */
-	void mostrarMasoCarta(Jugador* jugador);
+	void colocarMinas(Jugador* jugador);
 
 	/*
 	 * pre:
-	 * post: juega una carta a la vez de las 6 dadas.
+	 * post:
 	 */
-	void jugarCarta(Jugador *jugador);
-
-
-	/*
-	 * pre:
-	 * post: elimina al jugador que se quedo sin tesoros.
-	 */
-	void eliminarJugador(unsigned int posicion);
+	void jugarCarta(Jugador* jugador);
 
 	/*
 	 * pre:
-	 * post: asgina la cantidad de jugadores vivos.
+	 * post:
 	 */
-	void setJugadoresVivos(unsigned int jugadores);
+	void agregarCarta(Jugador* jugador);
 
 	/*
 	 * pre:
-	 * post:devuelve la cantidad de jugadores vivos.
+	 * post:
 	 */
-	unsigned int getJugadoresVivos();
+	Jugador* verificarEliminacionJugador(Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void pintarTesoro(Casillero* casillero, Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void pintarEspia(Casillero* casillero, Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void pintarMina(Casillero* casillero, Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void pintarCasilleroVacio(Casillero* casillero, Jugador* jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void jugar();
 };
 
 #endif /* TESOROBINARIO_H_ */

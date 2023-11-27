@@ -1,96 +1,130 @@
 /*
  * FuncionalidadCartas.h
  *
- *  Created on: 26/10/2023
- *      Author: algo2
+ *  Created on: 13 nov. 2023
+ *      Author: gonzalo
  */
 
 #ifndef FUNCIONALIDADCARTAS_H_
 #define FUNCIONALIDADCARTAS_H_
+#include "TableroBMP.h"
 #include "Tablero.h"
 #include "Jugador.h"
 
+
 class FuncionalidadCartas {
 private:
-	Tablero* tablero;
+	Tablero* tableroDelJuego;
 
 	/*
-	 * pre: -
-	 * post: Valida que el tablero sea distinto de NULL.
+	 * pre:
+	 * post:
 	 */
-	void validarTablero(Tablero* tablero);
+	void validarTablero(Tablero*& tablero);
 
 	/*
-	 * pre: -
-	 * post: Devuelve el casillero con las coordenadas que se ingresaron.
+	 * pre:
+	 * post:
 	 */
-	Casillero* ingresoDeCoordenadas();
+	void validarJugador(Jugador*& jugador);
 
 	/*
-	 * pre: -
-	 * post: Retorna verdadero si el tipo de ficha del casillero es TESORO.
+	 * pre:
+	 * post:
 	 */
-	bool validarCasilleroTesoro(Casillero* casillero);
+	bool tesoroPropio(Casillero*& casillero, Jugador*& jugador);
 
 	/*
-	 * pre: -
-	 * post: Retorna verdadero si el propietario del tablero es el numero de jugador pasado por parámetro.
+	 * pre:
+	 * post:
 	 */
-	bool validarCasilleroPropietario(Casillero* casillero, Jugador* jugador);
+	bool tesoroDeOtroJugador(Casillero*& casillero, Jugador*& jugador);
 
 	/*
-	 * pre: -
-	 * post: Valida que el jugador sea distinto de NULL.
+	 * pre:
+	 * post:
 	 */
-	void validarJugador(Jugador* jugador);
+	bool casilleroVacio(Casillero*& casillero);
 
 public:
+	/*
+	 * pre:
+	 * post:
+	 */
+	FuncionalidadCartas(Tablero*& tableroDelJuego);
 
 	/*
-	 * pre: El tablero debe ser distinto de NULL.
-	 * post: Crea la funcionalidadCartas con el tablero pasado por parámetro.
+	 * pre:
+	 * post:
 	 */
-	FuncionalidadCartas(Tablero* tablero);
-
 	virtual ~FuncionalidadCartas();
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: Cambia el estado del casillero a BLINDADA.
+	 * pre:
+	 * post:
 	 */
-	void blindarCarta(Jugador* jugador);
+	Casillero* ingresoCoordenadaDeCasillero();
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: Verifica si en los casillos vecinos a una casilla hay tesoros de otros jugadores,
-	 * 		 informando la cantidad.
+	 * pre:
+	 * post:
 	 */
-	void radar(Jugador* jugador);
+	void eliminarTesoro(Casillero*& casillero, Lista<Jugador* >*& jugadores);
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: Recorre los vecinos de una casilla buscando una libre para
-	 * 		 colocar un tesoro.
+	 * pre:
+	 * post:
 	 */
-	void partirTesoro(Jugador* jugador);
+	unsigned int posicionCartaRomperBlindaje(Jugador*& jugador);
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: Permite que el jugador pueda ingresar un tesoro mina más.
+	 * pre:
+	 * post:
 	 */
-	void agregarTesoroMina(Jugador* jugador);
+	void pintarTesoro(TableroBMP*& tableroBMP, Casillero* casillero, Jugador* jugador);
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: rompe el blindaje y automaticamente recupera el tesoro.S
+	 * pre:
+	 * post:
 	 */
-	void romperBlindaje(Jugador* jugador, Lista<Jugador* >* jugadores, Casillero* casillero);
+	Jugador* jugadorAEliminarCarta(Jugador* jugadorDeLaCarta, Lista<Jugador* >* jugadores);
 
 	/*
-	 * pre: El jugador debe ser distinto de NULL.
-	 * post: elimina una carta al jugador enemigo, dejandolo con una carta mejor que utilizar.
+	 * pre:
+	 * post:
 	 */
-	void eliminarCartaEnemiga(Jugador* jugador, Lista<Jugador* >* jugadores);
+	void blindar(Jugador*& jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void radar(Jugador*& jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void partirTesoro(Jugador*& jugador, TableroBMP*& tableroBMP);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void agregarMina(Jugador*& jugador);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& jugadores, Casillero*& casillero);
+
+	/*
+	 * pre:
+	 * post:
+	 */
+	void eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores);
+
 };
 
 #endif /* FUNCIONALIDADCARTAS_H_ */
