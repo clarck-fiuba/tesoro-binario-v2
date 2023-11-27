@@ -101,11 +101,6 @@ void TableroBMP::pintarMarcoDeLaCapa() {
 	}
 }
 
-bool TableroBMP::archivoCapaYaExistente(const std::string& nombreArchivo) {
-	std::ifstream archivo(nombreArchivo);
-	return archivo.good();
-}
-
 void TableroBMP::crearCapa() {
 	std::string nombreArchivo = "Capa_del_tablero.bmp";
  	this->capaDelTablero->SetSize(this->anchoDeCapa, this->alturaDeCapa);
@@ -145,31 +140,16 @@ void TableroBMP::pintarFicha(unsigned int z, unsigned int x, unsigned int y,
 
 void TableroBMP::pintarTesoro(unsigned int z, unsigned int x, unsigned int y,
 		BMP& tablero, std::string nombreTablero) {
-	/*int inicioX, inicioY;
-	this->calculoParaPintarFichas(z, x, y, inicioY, inicioX);
-	RangedPixelToPixelCopy(*this->tesoro, 0, this->anchoDeCasillero - 1, this->alturaDeCasillero - 1, 0,
-					tablero, inicioY, inicioX);
-	tablero.WriteToFile(nombreTablero.c_str());*/
 	this->pintarFicha(z, x, y, tablero, *(this->tesoro), nombreTablero);
 }
 
 void TableroBMP::pintarEspia(unsigned int z, unsigned int x, unsigned int y,
 		BMP& tablero, std::string nombreTablero) {
-	/*int inicioX, inicioY;
-	this->calculoParaPintarFichas(z, x, y, inicioY, inicioX);
-	RangedPixelToPixelCopy(*this->espia, 0, this->anchoDeCasillero - 1, this->alturaDeCasillero - 1, 0,
-			tablero, inicioY, inicioX);
-	tablero.WriteToFile(nombreTablero.c_str());*/
 	this->pintarFicha(z, x, y, tablero, *(this->espia), nombreTablero);
 }
 
 void TableroBMP::pintarMina(unsigned int z, unsigned int x, unsigned int y,
 		BMP& tablero, std::string nombreTablero) {
-	/*int inicioX, inicioY;
-	this->calculoParaPintarFichas(z, x, y, inicioY, inicioX);
-	RangedPixelToPixelCopy(*this->mina, 0, this->anchoDeCasillero - 1, this->alturaDeCasillero - 1, 0,
-			tablero, inicioY, inicioX);
-	tablero.WriteToFile(nombreTablero.c_str());*/
 	this->pintarFicha(z, x, y, tablero, *(this->mina), nombreTablero);
 }
 

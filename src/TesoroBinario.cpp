@@ -13,8 +13,9 @@ void TesoroBinario::validarCantidadDeJugadores(unsigned int cantidadDeJugadores)
 }
 
 bool TesoroBinario::validarDireccionDeMoviento(char direccionDeMovimiento) {
-	if(direccionDeMovimiento != 'a' && direccionDeMovimiento != 'd' && direccionDeMovimiento != 's' &&
-			direccionDeMovimiento != 'w' && direccionDeMovimiento != 'q' && direccionDeMovimiento != 'e') {
+	if(direccionDeMovimiento != IZQUIERDA && direccionDeMovimiento != DERECHA &&
+			direccionDeMovimiento != ABAJO && direccionDeMovimiento != ARRIBA &&
+			direccionDeMovimiento != ADELANTE && direccionDeMovimiento != ATRAS) {
 		std::cout << "Dirección inexistente. Inténtelo de nuevo." << std::endl;
 		return false;
 	}
@@ -22,41 +23,41 @@ bool TesoroBinario::validarDireccionDeMoviento(char direccionDeMovimiento) {
 }
 
 bool TesoroBinario::validarMovimiento(char direccionDeMovimiento, Casillero* casilleroConTesoroAMover) {
-	if(this->getTablero()->getProfundidad() == 1 && (direccionDeMovimiento == 'q' ||
-			direccionDeMovimiento == 'e')) {
+	if(this->getTablero()->getProfundidad() == 1 && (direccionDeMovimiento == ADELANTE ||
+			direccionDeMovimiento == ATRAS)) {
 		std::cout << "No se puede mover el tesoro en esa dirección, el tablero es de 1 capa. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
-	else if(casilleroConTesoroAMover->getZ() == 1 && direccionDeMovimiento == 'q') {
+	else if(casilleroConTesoroAMover->getZ() == 1 && direccionDeMovimiento == ADELANTE) {
 		std::cout << "No se puede mover el tesoro para adelante. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
-	else if(casilleroConTesoroAMover->getX() == 1 && direccionDeMovimiento == 'w') {
+	else if(casilleroConTesoroAMover->getX() == 1 && direccionDeMovimiento == ARRIBA) {
 		std::cout << "No se puede mover el tesoro para arriba. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
-	else if(casilleroConTesoroAMover->getY() == 1 && direccionDeMovimiento == 'a') {
+	else if(casilleroConTesoroAMover->getY() == 1 && direccionDeMovimiento == IZQUIERDA) {
 		std::cout << "No se puede mover el tesoro para la izquierda. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
 	else if(casilleroConTesoroAMover->getZ() == this->tablero->getProfundidad() &&
-			direccionDeMovimiento == 'e') {
+			direccionDeMovimiento == ATRAS) {
 		std::cout << "No se puede mover el tesoro para atrás. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
 	else if(casilleroConTesoroAMover->getX() == this->tablero->getAlto() &&
-			direccionDeMovimiento == 's') {
+			direccionDeMovimiento == ABAJO) {
 		std::cout << "No se puede mover el tesoro para abajo. ";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
 	}
 	else if(casilleroConTesoroAMover->getY() == this->tablero->getAncho() &&
-			direccionDeMovimiento == 'd') {
+			direccionDeMovimiento == DERECHA) {
 		std::cout << "No se puede mover el tesoro para la derecha.";
 		std::cout << "Inténtelo de nuevo." << std::endl;
 		return false;
@@ -157,8 +158,7 @@ unsigned int TesoroBinario::configurarCantidadDeJugadores() {
 }
 
 unsigned int TesoroBinario::configurarCantidadDeTesorosPermitidos(unsigned int cantidadDeJugadores) {
-	//unsigned int cantidadDeTesorosPermitidos = cantidadDeJugadores * MULTIPLICADOR_DE_TESOROS;
-	unsigned int cantidadDeTesorosPermitidos = 1;
+	unsigned int cantidadDeTesorosPermitidos = cantidadDeJugadores * MULTIPLICADOR_DE_TESOROS;
 	return cantidadDeTesorosPermitidos;
 }
 
@@ -260,27 +260,27 @@ Casillero* TesoroBinario::calculoNuevoCasilleroConTesoro(char direccionDeMovimie
 		Casillero* casilleroConTesoroAMover) {
 	Casillero* nuevoCasilleroConTesoro;
 	switch(direccionDeMovimiento) {
-	case 'q':
+	case ADELANTE:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ() - 1,
 				casilleroConTesoroAMover->getX(), casilleroConTesoroAMover->getY());
 		break;
-	case 'w':
+	case ARRIBA:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ(),
 				casilleroConTesoroAMover->getX() - 1, casilleroConTesoroAMover->getY());
 		break;
-	case 'a':
+	case IZQUIERDA:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ(),
 				casilleroConTesoroAMover->getX(), casilleroConTesoroAMover->getY() - 1);
 		break;
-	case 'e':
+	case ATRAS:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ() + 1,
 				casilleroConTesoroAMover->getX(), casilleroConTesoroAMover->getY());
 		break;
-	case 's':
+	case ABAJO:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ(),
 				casilleroConTesoroAMover->getX() + 1, casilleroConTesoroAMover->getY());
 		break;
-	case 'd':
+	case DERECHA:
 		nuevoCasilleroConTesoro = this->tablero->getCasillero(casilleroConTesoroAMover->getZ(),
 				casilleroConTesoroAMover->getX(), casilleroConTesoroAMover->getY() + 1);
 		break;
@@ -324,7 +324,7 @@ void TesoroBinario::eliminarTesoro(Casillero* casillero) {
 void TesoroBinario::inactivarCasillero(Casillero* casillero, unsigned int numeroDeTurno) {
 	casillero->setEstado(INACTIVO);
 	this->casillerosInactivos->agregarElemento(casillero);
-	this->numeroDeTurnoActivarCasillero->agregarElemento(numeroDeTurno + 2);
+	this->numeroDeTurnoActivarCasillero->agregarElemento(numeroDeTurno + TURNOS_CASILLERO_DESACTIVADO);
 }
 
 void TesoroBinario::activarCasillero() {
@@ -371,7 +371,6 @@ void TesoroBinario::colocarTesoros(Jugador* jugador) {
 	if(this->casilleroVacio(casillero)) {
 		casillero->colocarFicha(new Ficha(TESORO), jugador->getNumeroJugador());
 		jugador->setCantidadDeTesorosEnTablero(jugador->getCantidadDeTesorosEnTablero() + 1);
-		//Pintar tesoro.
 		this->pintarTesoro(casillero, jugador);
 	}
 	else {
@@ -395,7 +394,6 @@ void TesoroBinario::colocarEspias(Jugador* jugador) {
 
 	if(this->casilleroVacio(casillero)) {
 		casillero->colocarFicha(new Ficha(ESPIA), jugador->getNumeroJugador());
-		//Pintar espia.
 		this->pintarEspia(casillero, jugador);
 	}
 	else if(this->casilleroInactivo(casillero)) {
@@ -409,12 +407,11 @@ void TesoroBinario::colocarEspias(Jugador* jugador) {
 				if(this->buscarCartaRomperBlindaje(jugador)) {
 					char respuesta;
 					do {
-						std::cout << "Cuenta con una carta ROMPER BLINDAJE, desea jugarla (s/n): ";
+						std::cout << "Cuenta con una carta ROMPER BLINDAJE, desea jugarla (S/N): ";
 						std::cin >> respuesta;
-					} while(respuesta != 's' && respuesta != 'n');
-					if(respuesta == 's') {
+					} while(respuesta != AFIRMATIVA && respuesta != NEGATIVA);
+					if(respuesta == AFIRMATIVA) {
 						this->funcionalidadCartas->romperBlindaje(jugador, this->jugadores, casillero);
-						//Pintar espia.
 						this->pintarEspia(casillero, jugador);
 					}
 					else {
@@ -428,16 +425,15 @@ void TesoroBinario::colocarEspias(Jugador* jugador) {
 			else {
 				std::cout << "Tesoro encontrado." << std::endl;
 				this->eliminarTesoro(casillero);
+				this->pintarCasilleroVacio(casillero, jugadorDelCasillero);
 				casillero->cambiarFicha(ESPIA, jugador->getNumeroJugador());
 				this->inactivarCasillero(casillero, this->getNumeroDeTurno());
-				//Pintar espia.
 				this->pintarEspia(casillero, jugador);
 			}
 		}
 		else if(this->espiaDeOtroJugador(casillero, jugador)) {
 			std::cout << "Se encuentra un espia enemigo, ambos espias mueren." << std::endl;
 			casillero->quitarFicha();
-			//Pintar casillero vacio en el tablero del otro jugador.
 			this->pintarCasilleroVacio(casillero, jugadorDelCasillero);
 			return;
 		}
@@ -448,7 +444,6 @@ void TesoroBinario::colocarEspias(Jugador* jugador) {
 					*(jugador->getTableroBMP()), jugador->getNombreTablero());
 			casillero->quitarFicha();
 			jugador->aPisadoMina(true);
-			//Pintar casillero vacio en el tablero del otro jugador.
 			this->pintarCasilleroVacio(casillero, jugadorDelCasillero);
 		}
 		else {
@@ -465,15 +460,15 @@ void TesoroBinario::moverTesoros(Jugador* jugador) {
 	char respuesta;
 	std::cout << "JUGADOR " << jugador->getNumeroJugador() << ": ";
 	std::cout << "Desea mover un tesoro, "
-			"tenga en cuenta que perderá el blindaje en caso de que esté blindado (s/n): ";
+			"tenga en cuenta que perderá el blindaje en caso de que esté blindado (S/N): ";
 	std::cin >> respuesta;
 
-	if(respuesta != 's' && respuesta != 'n') {
+	if(respuesta != AFIRMATIVA && respuesta != NEGATIVA) {
 		std::cout << "Respuesta no válida." << std::endl;
 		this->moverTesoros(jugador);
 	}
 	else {
-		if(respuesta == 's') {
+		if(respuesta == AFIRMATIVA) {
 			Casillero* casilleroConTesoroAMover;
 			Casillero* nuevoCasilleroConTesoro;
 			do {
@@ -487,7 +482,7 @@ void TesoroBinario::moverTesoros(Jugador* jugador) {
 			} while(!this->tesoroPropio(casilleroConTesoroAMover, jugador) ||
 					this->casilleroInactivo(casilleroConTesoroAMover));
 			char direccionDeMovimiento;
-			std::cout << "Direcciones movimiento: "
+			std::cout << "Direcciones de movimiento: "
 					"w: ARRIBA - s:ABAJO - a:IZQUIERDA - d:DERECHA - q:ADELANTE - e: ATRAS. " << std::endl;
 
 			direccionDeMovimiento = this->ingresoDeDireccionDeMoviento(casilleroConTesoroAMover);
@@ -497,7 +492,6 @@ void TesoroBinario::moverTesoros(Jugador* jugador) {
 			if(this->casilleroVacio(nuevoCasilleroConTesoro)) {
 				casilleroConTesoroAMover->quitarFicha();
 				nuevoCasilleroConTesoro->colocarFicha(new Ficha(TESORO), jugador->getNumeroJugador());
-				//Pintar movimiento del tesoro.
 				this->pintarCasilleroVacio(casilleroConTesoroAMover, jugador);
 				this->pintarTesoro(nuevoCasilleroConTesoro, jugador);
 			}
@@ -533,14 +527,14 @@ void TesoroBinario::colocarMinas(Jugador* jugador) {
 	else {
 		char respuesta;
 		std::cout << "JUGADOR " << jugador->getNumeroJugador() << ": ";
-		std::cout << "Desea colocar una mina (s/n): ";
+		std::cout << "Desea colocar una mina (S/N): ";
 		std::cin >> respuesta;
-		if(respuesta != 's' && respuesta != 'n') {
+		if(respuesta != AFIRMATIVA && respuesta != NEGATIVA) {
 			std::cout << "Respuesta no válida." << std::endl;
 			this->colocarMinas(jugador);
 		}
 		else {
-			if(respuesta == 's') {
+			if(respuesta == AFIRMATIVA) {
 				std::cout << "Ingrese la coordenada donde desea colocar su mina: " << std::endl;
 				Casillero* casillero = this->ingresoCoordenadaDeCasillero();
 				Jugador* jugadorDelCasillero = this->jugadorDelCasillero(casillero);
@@ -548,7 +542,6 @@ void TesoroBinario::colocarMinas(Jugador* jugador) {
 				if(this->casilleroVacio(casillero)) {
 					casillero->colocarFicha(new Ficha(MINA), jugador->getNumeroJugador());
 					jugador->setCantidadDeMinasEnTablero(jugador->getCantidadDeMinasEnTablero() + 1);
-					//Pintar mina.
 					this->pintarMina(casillero, jugador);
 				}
 				else if(this->casilleroInactivo(casillero)) {
@@ -567,7 +560,6 @@ void TesoroBinario::colocarMinas(Jugador* jugador) {
 							this->eliminarTesoro(casillero);
 							this->inactivarCasillero(casillero, this->getNumeroDeTurno());
 							jugador->setCantidadDeMinasEnTablero(jugador->getCantidadDeMinasEnTablero() + 1);
-							//Pintar casillero vacio en el tablero del otro jugador.
 							this->pintarCasilleroVacio(casillero, jugadorDelCasillero);
 						}
 					}
@@ -590,19 +582,20 @@ void TesoroBinario::jugarCarta(Jugador* jugador) {
 	}
 	if(jugador->getManoDeCartas()->estaVacia()) {
 		std::cout << "No cuenta con cartas para jugar." << std::endl;
+		return;
 	}
 	char respuesta;
 	std::cout << "JUGADOR " << jugador->getNumeroJugador() << ": ";
 	this->mostrarManoDeCartas(jugador);
-	std::cout << "Desea jugar una carta (s/n): ";
+	std::cout << "Desea jugar una carta (S/N): ";
 	std::cin >> respuesta;
 
-	if(respuesta != 's' && respuesta != 'n') {
+	if(respuesta != AFIRMATIVA && respuesta != NEGATIVA) {
 		std::cout << "Respuesta no válida." << std::endl;
 		this->jugarCarta(jugador);
 	}
 	else {
-		if(respuesta == 's') {
+		if(respuesta == AFIRMATIVA) {
 			jugador->aJugadoCarta(true);
 			unsigned int numeroDeCartaAJugar;
 			do {
@@ -648,7 +641,7 @@ void TesoroBinario::agregarCarta(Jugador* jugador) {
 		int numeroRandom;
 		std::random_device rd;
 		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, 6);
+		std::uniform_int_distribution<int> dist(1, CANTIDAD_DE_CARTAS);
 		numeroRandom = dist(mt);
 		switch(numeroRandom) {
 		case 1:
@@ -715,6 +708,7 @@ void TesoroBinario::jugar() {
 	this->crearTableroBMPDeLosJugadores();
 	std::cout << "------------------------------------" << std::endl;
 	this->mostrarConfiguracionesDelJuego();
+	std::cout << "------------------------------------" << std::endl;
 
 	for(unsigned int i = 1; i <= this->cantidadDeTesorosPermitidos; i++) {
 		this->getJugadores()->iniciarCursor();

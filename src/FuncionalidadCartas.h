@@ -17,111 +17,113 @@ private:
 	Tablero* tableroDelJuego;
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Valida que el tablero esté inicializado.
 	 */
 	void validarTablero(Tablero*& tablero);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Valida que el jugador esté inicializado.
 	 */
 	void validarJugador(Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna verdadero si el casillero tiene como ficha un TESORO del jugador.
 	 */
 	bool tesoroPropio(Casillero*& casillero, Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna verdadero si el casillero tiene como ficha un TESORO de otro jugador.
 	 */
 	bool tesoroDeOtroJugador(Casillero*& casillero, Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna verdadero si el casillero está en estado VACIO.
 	 */
 	bool casilleroVacio(Casillero*& casillero);
 
 public:
 	/*
-	 * pre:
-	 * post:
+	 * pre: El tablero del jugador debe estar inicializado.
+	 * post: Crea funcionalidad cartas asignando el tablero al pasado por parámetro.
 	 */
 	FuncionalidadCartas(Tablero*& tableroDelJuego);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Elimina de forma correcta a funcionalidad cartas.
 	 */
 	virtual ~FuncionalidadCartas();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna un casillero con las coordenadas que el usuario ingresó.
 	 */
 	Casillero* ingresoCoordenadaDeCasillero();
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Busca al jugador propietario del casillero y le elimina un tesoro.
 	 */
 	void eliminarTesoro(Casillero*& casillero, Lista<Jugador* >*& jugadores);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna la posicion de la carta ROMPER_BLINDAJE de la mano de cartas del jugador.
 	 */
 	unsigned int posicionCartaRomperBlindaje(Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Pinta un tesoro en las coordenadas del casillero indicado en el tablero del jugador.
 	 */
 	void pintarTesoro(TableroBMP*& tableroBMP, Casillero* casillero, Jugador* jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: -
+	 * post: Retorna el jugador que el usuario ingresó del cual se eliminará una de sus cartas.
 	 */
 	Jugador* jugadorAEliminarCarta(Jugador* jugadorDeLaCarta, Lista<Jugador* >* jugadores);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Cambia el estado del casillero a BLINDADO.
 	 */
 	void blindar(Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Contabiliza la cantidad de tesoros vecinos hay alrededor de cierto casillero
+	 * 		 que el usuario ingresa.
 	 */
 	void radar(Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Coloca un tesoro en un casillero vecino de un tesoro que el jugador elija.
 	 */
 	void partirTesoro(Jugador*& jugador, TableroBMP*& tableroBMP);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Suma una mina a la cantidad de minas permitidas que puede colocar el jugador.
 	 */
 	void agregarMina(Jugador*& jugador);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Rompe el blindaje a un casillero blindado, recuperando el tesoro instantáneamente y
+	 * 		 dejando a un espia del jugador en el casillero.
 	 */
 	void romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& jugadores, Casillero*& casillero);
 
 	/*
-	 * pre:
-	 * post:
+	 * pre: El jugador debe estar inicializado.
+	 * post: Elimina una carta aleatoria del jugador indicado.
 	 */
 	void eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores);
 
