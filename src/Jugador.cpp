@@ -37,6 +37,8 @@ Jugador::Jugador(unsigned int numeroJugador) {
 	this->cantidadDeTesorosEnTablero = 0;
 	this->cantidadDeMinasPermitidas = 0;
 	this->cantidadDeMinasEnTablero = 0;
+	this->pisadoMinaDeOtroJugador = false;
+	this->jugadoCarta = false;
 	this->manoDeCartas = new Lista<Carta* >();
 	this->crearManoDeCartas();
 	this->tableroBMP = new BMP();
@@ -118,9 +120,6 @@ void Jugador::crearManoDeCartas() {
 	int numeroRandom;
 	std::srand(static_cast<unsigned int>(std::time(0)));
 	for(unsigned int i = 1; i <= CANTIDAD_DE_CARTAS_EN_MANO; i++) {
-		/*std::random_device rd;
-		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, CANTIDAD_DE_CARTAS);*/
 		numeroRandom = (std::rand() % CANTIDAD_DE_CARTAS) + 1;
 		switch(numeroRandom) {
 		case 1:

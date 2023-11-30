@@ -158,8 +158,7 @@ unsigned int TesoroBinario::configurarCantidadDeJugadores() {
 }
 
 unsigned int TesoroBinario::configurarCantidadDeTesorosPermitidos(unsigned int cantidadDeJugadores) {
-	//unsigned int cantidadDeTesorosPermitidos = cantidadDeJugadores * MULTIPLICADOR_DE_TESOROS;
-	unsigned int cantidadDeTesorosPermitidos = 1;
+	unsigned int cantidadDeTesorosPermitidos = cantidadDeJugadores * MULTIPLICADOR_DE_TESOROS;
 	return cantidadDeTesorosPermitidos;
 }
 

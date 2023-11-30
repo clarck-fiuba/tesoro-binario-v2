@@ -7,8 +7,6 @@
 
 #ifndef FUNCIONALIDADCARTAS_H_
 #define FUNCIONALIDADCARTAS_H_
-//#include <iostream>
-//#include <random>
 #include <cstdlib>
 #include <ctime>
 #include "TableroBMP.h"
