@@ -7,8 +7,12 @@
 
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
+
 #include <iostream>
-#include <random>
+#include <sstream>
+#include <cstdlib>
+#include <ctime>
+#include <unistd.h>
 #include "EasyBMP.h"
 #include "Constantes.h"
 #include "Lista.h"

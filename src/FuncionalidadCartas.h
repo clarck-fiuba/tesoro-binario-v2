@@ -7,10 +7,13 @@
 
 #ifndef FUNCIONALIDADCARTAS_H_
 #define FUNCIONALIDADCARTAS_H_
+#include <cstdlib>
+#include <ctime>
 #include "TableroBMP.h"
 #include "Tablero.h"
 #include "Jugador.h"
-#include <random>
+
+
 
 class FuncionalidadCartas {
 private:

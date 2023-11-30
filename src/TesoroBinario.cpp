@@ -6,9 +6,6 @@
  */
 #include "TesoroBinario.h"
 
-#include <cstdlib>
-#include <ctime>
-
 void TesoroBinario::validarCantidadDeJugadores(unsigned int cantidadDeJugadores) {
 	if(cantidadDeJugadores <= 1) {
 		throw std::runtime_error("La cantidad de jugadores debe ser mayor a 1.");
@@ -642,12 +639,8 @@ void TesoroBinario::jugarCarta(Jugador* jugador) {
 void TesoroBinario::agregarCarta(Jugador* jugador) {
 	if(jugador->getEstadoJugadoCarta()) {
 		int numeroRandom;
-	/*	std::random_device rd;
-		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, CANTIDAD_DE_CARTAS);
-		numeroRandom = dist(mt); */
 		std::srand(static_cast<unsigned int>(std::time(0)));
-		int numeroRandom = std::rand() % CANTIDAD_DE_CARTAS + 1;
+		numeroRandom = (std::rand() % CANTIDAD_DE_CARTAS) + 1;
 		switch(numeroRandom) {
 		case 1:
 			jugador->getManoDeCartas()->agregarElemento(new Carta(BLINDAR));

@@ -6,8 +6,6 @@
  */
 
 #include "Jugador.h"
-#include <cstdlib>
-#include <ctime>
 
 void Jugador::validarNumeroDeJugador(unsigned int numeroJugador) {
 	if(numeroJugador < 1) {
@@ -39,10 +37,15 @@ Jugador::Jugador(unsigned int numeroJugador) {
 	this->cantidadDeTesorosEnTablero = 0;
 	this->cantidadDeMinasPermitidas = 0;
 	this->cantidadDeMinasEnTablero = 0;
+	this->pisadoMinaDeOtroJugador = false;
+	this->jugadoCarta = false;
 	this->manoDeCartas = new Lista<Carta* >();
 	this->crearManoDeCartas();
 	this->tableroBMP = new BMP();
-	this->nombreTablero = "Tablero " + std::string(this->numeroDeJugador) + ".bmp";
+	std::stringstream idJugador;
+	idJugador << numeroJugador;
+	std::string idJugadorCadena = idJugador.str();
+	this->nombreTablero = "Tablero " + idJugadorCadena + ".bmp";
 }
 
 Jugador::~Jugador() {
@@ -115,11 +118,9 @@ void Jugador::aJugadoCarta(bool jugarCarta) {
 
 void Jugador::crearManoDeCartas() {
 	int numeroRandom;
+	std::srand(static_cast<unsigned int>(std::time(0)));
 	for(unsigned int i = 1; i <= CANTIDAD_DE_CARTAS_EN_MANO; i++) {
-
-		std::srand(static_cast<unsigned int>(std::time(0)));
-		int numeroRandom = std::rand() % CANTIDAD_DE_CARTAS + 1;
-
+		numeroRandom = (std::rand() % CANTIDAD_DE_CARTAS) + 1;
 		switch(numeroRandom) {
 		case 1:
 			this->manoDeCartas->agregarElemento(new Carta(BLINDAR));
