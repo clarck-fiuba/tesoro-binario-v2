@@ -40,7 +40,10 @@ Jugador::Jugador(unsigned int numeroJugador) {
 	this->manoDeCartas = new Lista<Carta* >();
 	this->crearManoDeCartas();
 	this->tableroBMP = new BMP();
-	this->nombreTablero = "Tablero " + std::to_string(this->numeroDeJugador) + ".bmp";
+	std::stringstream idJugador;
+	idJugador << numeroJugador;
+	std::string idJugadorCadena = idJugador.str();
+	this->nombreTablero = "Tablero " + idJugadorCadena + ".bmp";
 }
 
 Jugador::~Jugador() {
@@ -113,11 +116,12 @@ void Jugador::aJugadoCarta(bool jugarCarta) {
 
 void Jugador::crearManoDeCartas() {
 	int numeroRandom;
+	std::srand(static_cast<unsigned int>(std::time(0)));
 	for(unsigned int i = 1; i <= CANTIDAD_DE_CARTAS_EN_MANO; i++) {
-		std::random_device rd;
+		/*std::random_device rd;
 		std::mt19937 mt(rd());
-		std::uniform_int_distribution<int> dist(1, CANTIDAD_DE_CARTAS);
-		numeroRandom = dist(mt);
+		std::uniform_int_distribution<int> dist(1, CANTIDAD_DE_CARTAS);*/
+		numeroRandom = (std::rand() % CANTIDAD_DE_CARTAS) + 1;
 		switch(numeroRandom) {
 		case 1:
 			this->manoDeCartas->agregarElemento(new Carta(BLINDAR));

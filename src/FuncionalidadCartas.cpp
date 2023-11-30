@@ -213,10 +213,11 @@ void FuncionalidadCartas::romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& j
 
 void FuncionalidadCartas::eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores) {
 	Jugador* jugadorAEliminarCarta = this->jugadorAEliminarCarta(jugador, jugadores);
-	std::random_device rd;
+	/*std::random_device rd;
 	std::mt19937 mt(rd());
-	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoDeCartas()->contarElementos());
-	int numeroRandom = dist(mt);
+	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoDeCartas()->contarElementos());*/
+	std::srand(static_cast<unsigned int>(std::time(0)));
+	int numeroRandom = (std::rand() % jugadorAEliminarCarta->getManoDeCartas()->contarElementos()) + 1;
 	jugadorAEliminarCarta->eliminarCartaDeLaMano(numeroRandom);
 	std::cout << "Carta eliminada." << std::endl;
 }
