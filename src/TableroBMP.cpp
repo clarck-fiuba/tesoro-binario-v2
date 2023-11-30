@@ -15,9 +15,9 @@ TableroBMP::TableroBMP(int cantidadDeCapas, int cantidadDeFilas, int cantidadDeC
 	this->alturaDeCasillero = 160;
 	this->separacionEntreCasilleros = 40;
 	this->anchoDeCapa = (this->anchoDeCasillero * this->cantidadDeColumnas) +
-			(this->separacionEntreCasilleros * (this->cantidadDeColumnas - 1));
+						(this->separacionEntreCasilleros * (this->cantidadDeColumnas - 1));
 	this->alturaDeCapa = (this->alturaDeCasillero * this->cantidadDeFilas) +
-			(this->separacionEntreCasilleros * (this->cantidadDeFilas - 1));
+					   (this->separacionEntreCasilleros * (this->cantidadDeFilas - 1));
 	this->anchoDelTablero = this->anchoDeCapa * cantidadDeCapas;
 	this->alturaDelTablero = this->alturaDeCapa;
 	this->capaDelTablero = new BMP();
@@ -103,7 +103,7 @@ void TableroBMP::pintarMarcoDeLaCapa() {
 
 void TableroBMP::crearCapa() {
 	std::string nombreArchivo = "Capa_del_tablero.bmp";
-	this->capaDelTablero->SetSize(this->anchoDeCapa, this->alturaDeCapa);
+ 	this->capaDelTablero->SetSize(this->anchoDeCapa, this->alturaDeCapa);
 	this->capaDelTablero->SetBitDepth(24);
 	this->pintarFondoDeLaCapa();
 	this->pintarCasilleros();

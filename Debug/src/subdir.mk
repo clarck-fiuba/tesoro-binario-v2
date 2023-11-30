@@ -4,13 +4,40 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
-../src/principal.cpp 
+../src/Carta.cpp \
+../src/Casillero.cpp \
+../src/EasyBMP.cpp \
+../src/Ficha.cpp \
+../src/FuncionalidadCartas.cpp \
+../src/Jugador.cpp \
+../src/Main.cpp \
+../src/Tablero.cpp \
+../src/TableroBMP.cpp \
+../src/TesoroBinario.cpp 
 
 OBJS += \
-./src/principal.o 
+./src/Carta.o \
+./src/Casillero.o \
+./src/EasyBMP.o \
+./src/Ficha.o \
+./src/FuncionalidadCartas.o \
+./src/Jugador.o \
+./src/Main.o \
+./src/Tablero.o \
+./src/TableroBMP.o \
+./src/TesoroBinario.o 
 
 CPP_DEPS += \
-./src/principal.d 
+./src/Carta.d \
+./src/Casillero.d \
+./src/EasyBMP.d \
+./src/Ficha.d \
+./src/FuncionalidadCartas.d \
+./src/Jugador.d \
+./src/Main.d \
+./src/Tablero.d \
+./src/TableroBMP.d \
+./src/TesoroBinario.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

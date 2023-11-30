@@ -30,94 +30,93 @@ private:
 
 public:
 	/*
-	 * pre:
-	 * post: crea el tableroBMP inicializando de forma correcta sus atrubitos.
+	 * pre: -
+	 * post: Crea TableroBMP inicializando de forma correcta sus atributos.
 	 */
 	TableroBMP(int cantidadDeCapas, int cantidadDeFilas, int cantidadDeColumnas);
 
 	/*
-	 * pre:
-	 * post: elimina el forma correcta el tableroBMP.
+	 * pre: -
+	 * post: Elimina de forma correcta TableroBMP.
 	 */
 	virtual ~TableroBMP();
 
 	/*
-	 * pre:
-	 * post: pinta en blaco el pixel de coordenadas x, y del BMP a pintar.
+	 * pre: -
+	 * post: Pinta de blanco el pixel de coordenadas x,y del BMP pasado por parámetro.
 	 */
 	void pintarBlanco(BMP* bmpAPintar, int x, int y);
 
 	/*
-	 * pre:
-	 * post: pinta en negro el pixel de coordenadas x, y del BMP a pintar.
+	 * pre: -
+	 * post: Pinta de negro el pixel de coordenadas x,y del BMP pasado por parámetro.
 	 */
 	void pintarNegro(BMP* bmpAPintar, int x, int y);
 
 	/*
-	 * pre:
-	 * post: pinta el fondo de la capaBMP.
+	 * pre: -
+	 * post: Pinta el fondo del BMP capaDelTablero.
 	 */
 	void pintarFondoDeLaCapa();
 
 	/*
-	 * pre:
-	 * post: pinta los casilleros de la capaBMP.
+	 * pre: -
+	 * post: Pinta los casilleros del BMP capaDelTablero.
 	 */
 	void pintarCasilleros();
 
 	/*
-	 * pre:
-	 * post: pinta el marco de la capaBMP.
+	 * pre: -
+	 * post: Pinta los marcos del BMP capaDelTablero.
 	 */
 	void pintarMarcoDeLaCapa();
 
-
 	/*
-	 * pre:
-	 * post: crea el capaBMP y lo escribe en un archivo.
+	 * pre: -
+	 * post: Crea el BMP capaDelTablero de forma correcta y lo escribe en un archivo .bmp
 	 */
 	void crearCapa();
 
 	/*
-	 * pre:
-	 * post: crea el tableroBMP y lo escribe en un archivo.
+	 * pre: -
+	 * post: Crea el BMP tablero de forma correcta y lo guarda con el nombre pasado por parámetro.
 	 */
 	void crearTablero(BMP& tablero, std::string nombreTablero);
 
 	/*
-	 * pre:
-	 * post: hace el calculo para los pixeles correctos para pintar las fichas.
+	 * pre: -
+	 * post: Realiza el calculo encontrar los pixeles correctos para pintar una ficha.
 	 */
 	void calculoParaPintarFichas(unsigned int z, unsigned int x, unsigned int y, int& inicioY, int& inicioX);
 
 	/*
-	 * pre:
-	 * post: pinta el fichaBMP en el tableroBMP.
+	 * pre: -
+	 * post: Pinta el BMP ficha que se pasa por parámetro en el tablero que se pasa por parámetro.
 	 */
 	void pintarFicha(unsigned int z, unsigned int x, unsigned int y,
 			BMP& tablero, BMP& ficha, std::string nombreTablero);
 
 	/*
-	 * pre:
-	 * post: pinta el tesoroBMP en el tableroBMP.
+	 * pre: -
+	 * post: Pinta un tesoro en el BMP tablero que se pasa por parámetro.
 	 */
 	void pintarTesoro(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
-	 * pre:
-	 * post:pinta el espiaBMP en el tableroBMP.
+	 * pre: -
+	 * post: Pinta un espia en el BMP tablero que se pasa por parámetro.
 	 */
 	void pintarEspia(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
-	 * pre:
-	 * post: pinta el minaBMP en el tableroBMP.
+	 * pre: -
+	 * post: Pinta una mina en el BMP tablero que se pasa por parámetro.
 	 */
 	void pintarMina(unsigned int z, unsigned int x, unsigned int y, BMP& tablero, std::string nombreTablero);
 
 	/*
-	 * pre:
-	 * post: pinta un casillero vacio en el tableroBMP.
+	 * pre: -
+	 * post: Pinta de negro un casillero del BMP tablero que se pasa por parámetro.
 	 */
 	void pintarCasilleroVacio(unsigned int z, unsigned int x, unsigned int y,
 			BMP& tablero, std::string nombreTablero);

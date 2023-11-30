@@ -6,6 +6,8 @@
  */
 
 #include "FuncionalidadCartas.h"
+#include <cstdlib>
+#include <ctime>
 
 void FuncionalidadCartas::validarTablero(Tablero*& tablero) {
 	if(tablero == NULL) {
@@ -212,13 +214,17 @@ void FuncionalidadCartas::romperBlindaje(Jugador*& jugador, Lista<Jugador* >*& j
 }
 
 void FuncionalidadCartas::eliminarCarta(Jugador* jugador, Lista<Jugador* >* jugadores) {
-	this->validarJugador(jugador);
 	Jugador* jugadorAEliminarCarta = this->jugadorAEliminarCarta(jugador, jugadores);
-	std::random_device rd;
+/*	std::random_device rd;
 	std::mt19937 mt(rd());
 	std::uniform_int_distribution<int> dist(1, jugadorAEliminarCarta->getManoDeCartas()->contarElementos());
-	int numeroRandom = dist(mt);
-	jugadorAEliminarCarta->eliminarCartaDeLaMano(numeroRandom);
+	int numeroRandom = dist(mt); */
+
+	std::srand(static_cast<unsigned int>(std::time(0)));
+	int numeroAleatorio = std::rand() % jugadorAEliminarCarta->getManoDeCartas()->contarElementos() + 1;
+
+	jugadorAEliminarCarta->eliminarCartaDeLaMano(numeroAleatorio);
+
 	std::cout << "Carta eliminada." << std::endl;
 }
 
